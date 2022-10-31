@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = C$:/Users/bradl/CLionProjects/3940/A3/cmake-build-debug/
+cmake_ninja_workdir = C$:/cygwin64/home/bradl/A3/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target A3
 
@@ -49,20 +49,26 @@ cmake_ninja_workdir = C$:/Users/bradl/CLionProjects/3940/A3/cmake-build-debug/
 
 build cmake_object_order_depends_target_A3: phony || CMakeFiles/A3.dir
 
-build CMakeFiles/A3.dir/main.cpp.obj: CXX_COMPILER__A3_Debug C$:/Users/bradl/CLionProjects/3940/A3/main.cpp || cmake_object_order_depends_target_A3
+build CMakeFiles/A3.dir/main.cpp.obj: CXX_COMPILER__A3_Debug C$:/cygwin64/home/bradl/A3/main.cpp || cmake_object_order_depends_target_A3
   DEP_FILE = CMakeFiles\A3.dir\main.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\A3.dir
   OBJECT_FILE_DIR = CMakeFiles\A3.dir
 
-build CMakeFiles/A3.dir/ServerSocket.cpp.obj: CXX_COMPILER__A3_Debug C$:/Users/bradl/CLionProjects/3940/A3/ServerSocket.cpp || cmake_object_order_depends_target_A3
+build CMakeFiles/A3.dir/ServerSocket.cpp.obj: CXX_COMPILER__A3_Debug C$:/cygwin64/home/bradl/A3/ServerSocket.cpp || cmake_object_order_depends_target_A3
   DEP_FILE = CMakeFiles\A3.dir\ServerSocket.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\A3.dir
   OBJECT_FILE_DIR = CMakeFiles\A3.dir
 
-build CMakeFiles/A3.dir/ServerThread.cpp.obj: CXX_COMPILER__A3_Debug C$:/Users/bradl/CLionProjects/3940/A3/ServerThread.cpp || cmake_object_order_depends_target_A3
+build CMakeFiles/A3.dir/ServerThread.cpp.obj: CXX_COMPILER__A3_Debug C$:/cygwin64/home/bradl/A3/ServerThread.cpp || cmake_object_order_depends_target_A3
   DEP_FILE = CMakeFiles\A3.dir\ServerThread.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\A3.dir
+  OBJECT_FILE_DIR = CMakeFiles\A3.dir
+
+build CMakeFiles/A3.dir/Socket.cpp.obj: CXX_COMPILER__A3_Debug C$:/cygwin64/home/bradl/A3/Socket.cpp || cmake_object_order_depends_target_A3
+  DEP_FILE = CMakeFiles\A3.dir\Socket.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\A3.dir
   OBJECT_FILE_DIR = CMakeFiles\A3.dir
@@ -75,7 +81,7 @@ build CMakeFiles/A3.dir/ServerThread.cpp.obj: CXX_COMPILER__A3_Debug C$:/Users/b
 #############################################
 # Link the executable A3.exe
 
-build A3.exe: CXX_EXECUTABLE_LINKER__A3_Debug CMakeFiles/A3.dir/main.cpp.obj CMakeFiles/A3.dir/ServerSocket.cpp.obj CMakeFiles/A3.dir/ServerThread.cpp.obj
+build A3.exe: CXX_EXECUTABLE_LINKER__A3_Debug CMakeFiles/A3.dir/main.cpp.obj CMakeFiles/A3.dir/ServerSocket.cpp.obj CMakeFiles/A3.dir/ServerThread.cpp.obj CMakeFiles/A3.dir/Socket.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\A3.dir
@@ -90,7 +96,7 @@ build A3.exe: CXX_EXECUTABLE_LINKER__A3_Debug CMakeFiles/A3.dir/main.cpp.obj CMa
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\bradl\CLionProjects\3940\A3\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D C:\cygwin64\home\bradl\A3\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -101,7 +107,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\bradl\CLionProjects\3940\A3\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -SC:\Users\bradl\CLionProjects\3940\A3 -BC:\Users\bradl\CLionProjects\3940\A3\cmake-build-debug"
+  COMMAND = cmd.exe /C "cd /D C:\cygwin64\home\bradl\A3\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -SC:\cygwin64\home\bradl\A3 -BC:\cygwin64\home\bradl\A3\cmake-build-debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -119,7 +125,7 @@ build A3: phony A3.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/bradl/CLionProjects/3940/A3/cmake-build-debug
+# Folder: C:/cygwin64/home/bradl/A3/cmake-build-debug
 
 build all: phony A3.exe
 

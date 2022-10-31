@@ -149,8 +149,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Users/bradl/CLionProjects/3940/A3/cmake-build-debug",
-		"source" : "C:/Users/bradl/CLionProjects/3940/A3"
+		"build" : "C:/cygwin64/home/bradl/A3/cmake-build-debug",
+		"source" : "C:/cygwin64/home/bradl/A3"
 	},
 	"version" : 
 	{

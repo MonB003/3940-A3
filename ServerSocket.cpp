@@ -3,3 +3,5 @@
 //
 
 #include "ServerSocket.hpp"
+
+ServerSocket::ServerSocket(int port):port(port){}
