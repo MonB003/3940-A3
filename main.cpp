@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,11 +15,16 @@ int main() {
 
     ServerSocket *serverSocket =  new ServerSocket(8999);
 
+
+
     if(serverSocket != NULL){
-        Socket *connection = serverSocket->accept();
-        char* req = connection->getRequest();
-        char* res = new char(50);
-        connection->sendResponse(res);
+        Socket *connection = serverSocket->Accept();
+        char* req = connection -> getRequest(); // request
+        char* res = new char(50); // response
+        connection -> sendResponse(res); 
     }
+
+
+    
     return 0;
 }
