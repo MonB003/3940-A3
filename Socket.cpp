@@ -1,18 +1,39 @@
-//
-// Created by bradl on 2022-10-30.
-//
-
 #include "Socket.hpp"
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <resolv.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
 
-
-Socket::Socket(int socket):socket(socket){}
-
-void Socket::sendResponse(char* c){
-
+Socket::Socket(int sock)
+{
+	this->sock = sock;
 }
+char* Socket::getRequest()
+{
+  int rval;
+  char *buf = new char[1024];
 
-char* Socket::getRequest(){
+  if ((rval = read(sock, buf, 1024)) < 0){
+    perror("reading socket");
+  }else  {
+    printf("%s\n",buf);
+  }
 
+	return buf;
 }
+void Socket::sendResponse(char *res){
+int rval;
 
-Socket::~Socket()= default;
+  if ((rval = write(sock, res, strlen(res))) < 0){
+    perror("writing socket");
+  }else  {
+    printf("%s\n",res);
+  }
+
+	return;
+}
+Socket::~Socket()
+{
+}

@@ -1,14 +1,23 @@
-#pragma once
+#ifndef THREAD_HPP_INCLUDED
+#define THREAD_HPP_INCLUDED
 
-#include "ServerSocket.hpp"
+#include<thread>
+#include <iostream>
 
-class Thread {
-public:
-	Thread(Thread *childThread);
-	~Thread();
-	virtual void run() {}
-	void start();
+
+using namespace std;
+
+class Thread{
+
 private:
-	void *state;
-	Thread *childThread;
+
+    Thread* msgsocket;
+
+public:
+    Thread(Thread* &msgsock);
+    ~Thread();
+    static void* run(void* socketNumber);
+     void start();
 };
+
+#endif // THREAD_HPP_INCLUDED

@@ -1,22 +1,28 @@
 #include "Thread.hpp"
 
-void* startMethodInThread(void *arg)
-{
-	if (arg == NULL)
-		return 0;
-	ServerThread *thread = (ServerThread*)arg;
-	thread->run();
-	return NULL;
+
+
+
+
+Thread::Thread(Thread* &msgsock){
+        this->msgsocket = msgsock;
+
 }
-Thread::Thread(Thread *childThread) {
-	this->state = malloc(sizeof(pthread_t));
-	this->childThread = childThread;
+
+
+
+static void* run(void* socketNumber){
+    std::cout << "hello" << std::endl;
+    return(void*) 1;
 }
-void Thread::start() {
-        pthread_t tid;
-	pthread_create(&tid, NULL, startMethodInThread, (void *) this);
-	memcpy(this->state, (const void *)&tid, sizeof(pthread_t));
+
+
+void Thread::start(){
+     pthread_t threadID; // creates the new thread;
+
+        // runs on creation.
+    pthread_create(&threadID,NULL,run,(void*)this);
 }
-Thread::~Thread() {
-	free(this->state);
-}
+
+
+
