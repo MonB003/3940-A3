@@ -46,10 +46,12 @@ public:
     }
 
     // display html
+    
     void run()
     {
 
         cout << "here in run method" << endl;
+        // we should distinguish between get and post here.....
         renderHTML();
     };
     ~ServerThread();
