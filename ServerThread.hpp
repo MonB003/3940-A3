@@ -1,9 +1,43 @@
 #include "Thread.hpp"
 #include <sys/socket.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
+string readFile(string filename){
+    // Open declared File - <fstream> header for file Reading and Writing
+    std::fstream f{filename};
+    filename = filename + "<h1>HTML Forms</h1>\n";
+
+    // Can manually open as well
+    //    f.open("data.txt");
+
+    // String for output
+    std::string input;
+    string output;
+    string intermediate;
+    output.append("HTTP/1.1 200 OK\n");
+    output.append("Content-Type:text/html\n");
+    output.append("Content-Length: ");
+
+    if (f.is_open()){
+
+        // Keep getting next Line
+        while(std::getline(f,input)){
+            intermediate.append(input);
+            intermediate.append("\n");
+        }
+        f.close();
+    }
+
+    output.append(to_string(intermediate.length()));
+    output.append("\n\n");
+    output.append(intermediate);
+
+    return filename;
+}
 // Router
 class ServerThread : public Thread
 {
@@ -38,10 +72,10 @@ public:
 
 //<!DOCTYPE html>\r\n<html>\r\n< head >\r\n< title > File Upload Form</ title>\r\n< / head >\r\n< body >\r\n
 // \r\n</body>\r\n</html>\r\n
-        string html = "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: 600\n\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<title> File Upload Form</title>\r\n</head>\r\n<body>\r\n<h1>Upload file</h1>\r\n<form id =\"form\" method=\"POST\" action=\"/\" enctype=\"multipart/form-data\">\r\n<input type=\"file\" name=\"fileName\"/><br/><br/>\r\nCaption: <input type =\"text\" name=\"caption\"<br/><br/>\r\n <br/>\nDate : <input type=\"date\" name=\"date\"<br/><br/>\r\n <br/>\n <input id='formBtn' type=\"submit\" name=\"submit\" value=\"Submit\"/>\r\n </form>\r\n</body>\r\n</html>\r\n";
-
+// "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: 14\n\n<h1>Hell<h1>\n"
+        string html = readFile("HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: 100\n\n<h2>Hell<h2>");
         char arr[200] = "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: 16\n\n<h1>testing</h1>";
-        int send_res = send(msgsocket, html.c_str(), html.length(), 0); // 
+        int send_res = send(msgsocket, html.c_str(), html.length(), 0); //
         // do a response...
     }
 
