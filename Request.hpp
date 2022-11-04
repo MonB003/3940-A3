@@ -1,7 +1,10 @@
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
+#include <string>
 
 using namespace std;
+
 
 
 class Request{
@@ -16,92 +19,145 @@ class Request{
     }
 
 
-    void parsePayload(InputStream inStream) {
+    void parsePayload(istringstream* inStream) {
         string savedByteCode = "";
 
-        cout << "PARSE PAYLOAD" << endl;;
+        cout << "PARSE PAYLOAD" << endl;
 
         //Scanner scanner = new Scanner(inStream);
 
+        /*
+        
+        
+        */
+
         // Need to know Request type: GET or POST
         // Parse First Line
-        reqType = scanner.next();
+        // reqType = scanner.next();
+        *inStream >> reqType;
+
         cout << "The Request Type is: " << endl;
-        String temp = "";
+        string temp = "";
 
 
         string dataKeys[] = {"Date", "Keyword", "Caption", "File"};
         int currentKey = 0;
         int maxKey = 4;
-        boolean endOfDataReached = false;
+        bool endOfDataReached = false;
         while(!endOfDataReached && currentKey < maxKey) {
             // Print each token.
-            temp = scanner.nextLine();
+            // temp = scanner.nextLine();
+            *inStream >> temp;
+            cout << temp;
+
             
             // Check and Set User-Agent
-            if (temp.startsWith("User-Agent:")){
+            if (temp.find("User-Agent:")){
                 reqUserAgent = "browser";
             }
-            if (temp.startsWith("User-Agent: cli")){
+            if (temp.find("User-Agent: cli")){
                 reqUserAgent = "cli";
             } 
 
 
-            if (temp.startsWith("--boundary")) {
+            if (temp.find("--boundary")) {
                 // Start of the current body from the form data
-                String currBody = scanner.nextLine();
-                String currValue = "";
+                // string currBody = scanner.nextLine();
+                string currBody;
+                *inStream >> currBody;
+
+                string currValue = "";
 
                 // Loop until next boundary is reached
-                while (!currBody.trim().equals("")) {
+                // while (!currBody.trim() == ("")) {
+                while (!currBody.empty()) {
                     currValue = currBody;           // Store previous line's value
-                    currBody = scanner.nextLine();  // Get next line
-                    System.out.println("CURRBODY: " + currBody);
+                    // currBody = scanner.nextLine();  // Get next line
+                    *inStream >> currBody;
+                    cout << "CURRBODY: " << currBody << endl;
                 }
 
-                currValue = scanner.nextLine();
+                // currValue = scanner.nextLine();
+                *inStream >> currValue;
 
                 // Store value in hashmap
-                FormData.put(dataKeys[currentKey], currValue);
-                System.out.println("PUT IN MAP: " + dataKeys[currentKey] + ", " + currValue);
+                // FormData.put(dataKeys[currentKey], currValue);
+                pair<string, string> currentData = make_pair(dataKeys[currentKey], currValue);
+                FormDataMap.insert(currentData);
+
+                cout << "PUT IN MAP: " << dataKeys[currentKey] << ", " << currValue << endl;
                 currentKey++;
             }
 
-            if (currentKey == 3 && temp.startsWith("--boundary")){
+            if (currentKey == 3 && temp.find("--boundary")){
 
                 // At the File Body Part. Currently at "--boundary"
-                String iterateByteCode = scanner.nextLine();
+                // string iterateByteCode = scanner.nextLine();
+                string iterateByteCode;
+                *inStream >> iterateByteCode;
+
 
                 // Parse File Body Part..
-                while(!(iterateByteCode.trim().equals(""))) {
+                while(!(iterateByteCode.empty())) {
 
                     // Keep iterating until you find empty line, which tells us to start reading at the next line.
-                    System.out.println("NOT AT EMPTY LINE" + iterateByteCode);
-                    iterateByteCode = scanner.nextLine();
+                    cout << "NOT AT EMPTY LINE" << iterateByteCode << endl;
+                    // iterateByteCode = scanner.nextLine();
+                    *inStream >> iterateByteCode;
                 }
-                temp = scanner.nextLine();
+                // temp = scanner.nextLine();
+                *inStream >> temp;
             }
-         
 
-            while ((!temp.trim().equals("")) && currentKey == 3 && !(temp.equals("--boundary--"))){
-                savedByteCode = savedByteCode + temp;
+            while ((!temp.empty()) && currentKey == 3 && !(temp == ("--boundary--"))){
+                // savedByteCode = savedByteCode + temp;
+                savedByteCode.append(temp);
 
-                temp = scanner.nextLine();
+                // temp = scanner.nextLine();
+                *inStream >> temp;
             }
             
-            if (temp.startsWith("Accept-Language:") || temp.contains("--boundary--")){
-                System.out.println("THIS SHOULD BE THE LAST ONE");
+            if (temp.find("Accept-Language:") || temp.find("--boundary--")){
+                cout << "THIS SHOULD BE THE LAST ONE" << endl;
                 imageByteCode = savedByteCode;
                 endOfDataReached = true;
             }
         }
 
-
-
-
-
-        System.out.println("Made it here");
+        // System.out.println("Made it here");
         // scanner.close();
+    }
+
+
+
+
+
+    void setReqType(string reqType) {
+        this->reqType = reqType;
+    }
+
+    void setUserAgent(string userAgent) {
+        reqUserAgent = userAgent;
+    }
+
+    string getReqMethod() {
+        return reqType;
+    }
+
+    string getUserAgent() {
+        return reqUserAgent;
+    }
+
+    istringstream* getInputStream() {
+        return *inputStream;
+    }
+
+    string getFormData(string key){
+        return FormDataMap.find(key);
+    }
+
+    string getImageByteCode(){
+        return imageByteCode;
     }
     
 
@@ -109,6 +165,6 @@ class Request{
         istringstream* inputStream;
         string reqType;
         string reqUserAgent;
-        pair<string, string> FormData;
+        unordered_map<string, string> FormDataMap;
         string imageByteCode;
 };
