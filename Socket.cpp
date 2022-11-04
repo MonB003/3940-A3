@@ -1,10 +1,4 @@
-#include "Socket.hpp"
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <resolv.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
+
 
 Socket::Socket(int sock)
 {

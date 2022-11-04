@@ -1,4 +1,16 @@
 #pragma once
+
+#include "Socket.hpp"
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <resolv.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
+#include <ostream>
+
+using namespace std;
+
 class Socket
 {
 public:
