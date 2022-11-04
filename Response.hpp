@@ -3,6 +3,8 @@
 #include <sstream>
 #include "Socket.hpp"
 #include <iostream>
+#include <ostream>
+
 #include <ctime>
 #include <fstream>
 

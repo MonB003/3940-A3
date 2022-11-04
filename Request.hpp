@@ -16,7 +16,7 @@ class Request{
         inputStream = inStream;
         // Create a method to parse incoming request payload
         parsePayload(inputStream);
-    }
+        }
 
 
     void parsePayload(istringstream* inStream) {

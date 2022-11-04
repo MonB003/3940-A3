@@ -28,7 +28,7 @@ int main() {
     struct sockaddr_in server;
     int msgsock;
     char buf[1024];
-    struct hostent *hp;
+    //struct hostent *host;
     char *host = "127.0.0.1"; // local host address
     int rval;
 
@@ -69,9 +69,12 @@ int main() {
 
        // new thread
         cout <<"creating thread" <<endl;
+
         ServerThread* serverThread = new ServerThread(msgsock);
         serverThread -> run();
     }
+
+    close(msgsock);
 
 
 cout<<"here"<<endl;
