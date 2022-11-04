@@ -6,17 +6,15 @@
 #include <stddef.h>
 #include <sys/socket.h>
 #include <sys/dir.h>
-#include <sys/types.h>
 #include <resolv.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
-#include <iostream>
+// #include <iostream>
 #include <arpa/inet.h>
 #include <netdb.h>
-#include <string.h>
 #include <string>
 
 
@@ -25,7 +23,7 @@ using namespace std;
 /**
     main function.
 */
-main() {
+int main() {
 
     struct sockaddr_in server;
     int msgsock;
@@ -33,7 +31,6 @@ main() {
     struct hostent *hp;
     char *host = "127.0.0.1"; // local host address
     int rval;
-    pthread_t thread_id;
 
     // socket creation
     int listening = socket(AF_INET,SOCK_STREAM,0);
@@ -54,7 +51,7 @@ main() {
     int bound = bind(listening, (struct sockaddr*)&server, sizeof(server)) ;
     cout << "bound: " << bound <<endl;
 
-    if(bound){
+    if(bound == - 1){
         perror("Cannot Bind");
         return -2;
     }
@@ -64,40 +61,20 @@ main() {
     while(1){
         cout <<"entering thread" <<endl;
 
-        msgsock = accept(listening, (struct sockaddr*) 0, (socklen_t*)0);
+        msgsock = accept(listening, (struct sockaddr*) 0, (socklen_t*) 0 );
 
-        cout<< "message socket: " << msgsock << endl;
         if(msgsock == -1){
             perror("accept");
         }
-
-        
 
        // new thread
         cout <<"creating thread" <<endl;
         ServerThread* serverThread = new ServerThread(msgsock);
         serverThread -> run();
-
-
-
-      
     }
 
 
-  //  if(connect(listening, (struct sockaddr*)&server, sizeof(server))<0 ){
-   //     perror("connection issue");
-   // }
-
-
-
- // ServerSocket *ss = new ServerSocket(8888);
-	//if (ss != NULL) {
-		//Socket *cs = ss->Accept();
-	//	char *req = cs->getRequest();
-	//	char *res = new char(50);
-	//	cs->sendResponse(res);
-//	}
-    close(listening);
+cout<<"here"<<endl;
     return 0;
 }
 
