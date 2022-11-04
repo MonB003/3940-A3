@@ -46,7 +46,7 @@ public:
     }
 
     // display html
-    
+
     void run()
     {
 
@@ -57,5 +57,5 @@ public:
     ~ServerThread();
 
 private:
-    int msgsocket;
+    int msgsocket; // socket reference.
 };
