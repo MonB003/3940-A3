@@ -4,6 +4,7 @@
 #include "Socket.hpp"
 #include <iostream>
 #include <ctime>
+#include <fstream>
 
 #define HTTP_VERSION "HTTP/1.1 OK"
 
@@ -23,7 +24,8 @@ public:
 
 
     void send(string page){
-            ostream out = socket.getOutputStream();
+            // ostream out = socket.getOutputStream();
+            ostream* out = getOutputStream();
             string htmlPage = page;
             string CRLF = "\r\n"; // need this line
             string response = "HTTP/1.1 200 OK";

@@ -149,11 +149,12 @@ class Request{
     }
 
     istringstream* getInputStream() {
-        return *inputStream;
+        return inputStream;
     }
 
     string getFormData(string key){
-        return FormDataMap.find(key);
+        // string found = FormDataMap.find(key);
+        return FormDataMap.at(key);
     }
 
     string getImageByteCode(){
