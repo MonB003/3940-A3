@@ -1,6 +1,8 @@
 #include "Socket.hpp"
 #include "ServerSocket.hpp"
 #include "Thread.hpp"
+#include "ServerThread.hpp"
+
 #include <stddef.h>
 #include <sys/socket.h>
 #include <sys/dir.h>
@@ -45,7 +47,7 @@ main() {
 
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = 8999;
+    server.sin_port = htons(8888);
    // server.sin_port = htons(54000); // can try this too if theres errors, refers to endianess
     //inet_pton(AF_INET,"0.0.0.0", &server.sin_addr);
 
@@ -60,18 +62,25 @@ main() {
     listen(listening, 5);
 
     while(1){
-        msgsock = accept(listening, (struct sockaddr*)0, (socklen_t*)0);
+        cout <<"entering thread" <<endl;
+
+        msgsock = accept(listening, (struct sockaddr*) 0, (socklen_t*)0);
+
+        cout<< "message socket: " << msgsock << endl;
         if(msgsock == -1){
             perror("accept");
         }
+
+        
+
        // new thread
+        cout <<"creating thread" <<endl;
+        ServerThread* serverThread = new ServerThread(msgsock);
+        serverThread -> run();
 
-       Thread serverThread = new Thread(msgsock);
-      //  pthread_create(&thread_id,NULL,(void*)msgsock);
 
 
-
-        // thread creation goes here...
+      
     }
 
 
@@ -88,6 +97,7 @@ main() {
 	//	char *res = new char(50);
 	//	cs->sendResponse(res);
 //	}
+    close(listening);
     return 0;
 }
 
