@@ -1,11 +1,9 @@
 #pragma once
 
 #include <sstream>
-// #include "Socket.hpp"
+#include "Socket.hpp"
 #include <iostream>
 #include <ostream>
-#include <sys/socket.h>
-
 
 #include <ctime>
 #include <fstream>
@@ -16,20 +14,14 @@ using namespace std;
 
 class Response {
 
-private:
-    string characterEncoding;
-    string contentType;
-    ostringstream* outStream;
-    ostream* oStream;
-    //Socket socket;
-    int socket;
-
 public:
     Response(ostringstream *outStream);
 
+    Response(Socket socket, ostringstream *outStream);
+
     Response(int socket, ostringstream *outStream);
 
-    void sendBack(string page);
+    string sendBack(string page);
 
     void createHeader();
 
@@ -37,7 +29,7 @@ public:
         return oStream;
     }
 
-    unsigned char* createByteArray();
+    char* createByteArray();
     
     ostringstream* getByteArray();
 
@@ -54,6 +46,11 @@ public:
     }
 
 
-
+private:
+    string characterEncoding;
+    string contentType;
+    ostringstream* outStream;
+    ostream* oStream;
+    Socket socket;
 
 };

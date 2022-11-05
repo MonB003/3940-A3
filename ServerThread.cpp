@@ -1,6 +1,6 @@
 #include "ServerThread.hpp"
 
-ServerThread::ServerThread(int msgSock) : Thread(this)
+ServerThread::ServerThread(Socket* msgSock) : Thread(this)
 {
     this->msgsocket = msgSock;
 }
@@ -11,7 +11,7 @@ int ServerThread::renderHTML()
 
     char arr[200] = "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: 16\n\n<h1>testing</h1>";
 
-    int send_res = send(msgsocket, html.c_str(), html.length(), 0); //
+    int send_res = send(msgsocket->getSocket(), html.c_str(), html.length(), 0); //
     // do a response...
     return send_res;
 }
@@ -21,7 +21,7 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
     if (method == "GET") {
         cout << "-------------------------------2. METHOD: " << method << endl;
         int responseInt = up.get(*res, *req);
-
+        
 
         // if (responseInt != -1) {
 
@@ -41,12 +41,12 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
     cout << "in method call" << endl;
 }
 
-void ServerThread::run()
+string ServerThread::run()
 {
     char buffer[1024 * 1024];
 
     // writes to the socket 
-    recv(msgsocket, &buffer, 1024 * 1024, 0);
+    recv(msgsocket->getSocket(), &buffer, 1024 * 1024, 0);
 
     // istringstream requestInfo = buffer.c_str();
     istringstream requestInfo(buffer);
@@ -54,11 +54,13 @@ void ServerThread::run()
 
     // Servlet *up = nullptr;
 
-    UploadServlet *up = new UploadServlet{msgsocket};
+    UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
 
     ostringstream *outputWriter = new ostringstream();
-    Response *response = new Response(msgsocket, outputWriter);
-    Request *request = new Request(reqPtr);
+    response = new Response(msgsocket->getSocket(), outputWriter);
+    request = new Request(reqPtr);
+
+   
     string requestMethod = request->getReqMethod();
     cout << "METHOD: [" << requestMethod << "]" << endl;
 
@@ -73,9 +75,13 @@ void ServerThread::run()
     // {
     //     // up = new ClientServlet();
     // }
-    runMethod(requestMethod, response, request, *up);
+
+
+
+    // runMethod(requestMethod, response, request, *up);
+
+
 
     // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
-
-    cout << "here in run method" << endl;
+   return requestMethod;
 }

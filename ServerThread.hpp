@@ -6,6 +6,7 @@
 #include <sstream>
 #include "Servlet.hpp"
 #include "UploadServlet.hpp"
+#include "Socket.hpp"
 
 //constexpr string url ="localhost:8888";
 
@@ -16,18 +17,27 @@ class ServerThread : public Thread
 {
 
 public:
-     ServerThread(int msgSock);
-
+     //ServerThread(int msgSock);
+     ServerThread(Socket* msgSock);
     int renderHTML();
 
     void parseRequest();
 
-    void run();
+    string run();
 
     void runMethod(string &method,  Response *res,  Request *req, Servlet &up);
 
     ~ServerThread() = default;
+    Request* getRequest(){
+        return this->request;
+    }
 
+    Response* getResponse() {
+        return this->response;
+    }
 private:
-    int msgsocket; // socket reference.
+    Socket* msgsocket; // socket reference.
+    Request *request;
+    Response *response;
+
 };

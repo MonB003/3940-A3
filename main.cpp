@@ -2,8 +2,9 @@
 // #include "ServerSocket.hpp"
 #include "Thread.hpp"
 #include "ServerThread.hpp"
-#include "../Socket/ServerSocket.hpp"
-
+#include "ServerSocket.hpp"
+#include "Request.hpp"
+#include "Response.hpp"
 #include <stddef.h>
 #include <sys/socket.h>
 #include <sys/dir.h>
@@ -17,6 +18,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <string>
+#include <cstring>
 
 
 using namespace std;
@@ -61,35 +63,34 @@ int main() {
 
     // listen(listening, 5);
 
-    ServerSocket *socket = new ServerSocket(8888);
-
-    while(socket != null){
-        Socket *currentSocket = socket->Accept();
+    ServerSocket *socket = new ServerSocket(8889); // socket creation.
+        cout<<"not in loop"<<endl;
+    if(socket == NULL){
+        cout<<"UH OH"<<endl;
     }
 
-    // while(1){
-    //     cout <<"entering thread" <<endl;
+    while(socket != NULL){
+          cout<<"NOT NULL"<<endl;
+          
+        Socket *currentSocket = socket -> Accept(); 
+        ServerThread* serverThread = new ServerThread(currentSocket);
+        serverThread -> run();
 
-    //     msgsock = accept(listening, (struct sockaddr*) 0, (socklen_t*) 0 );
-
-    //     if(msgsock == -1){
-    //         perror("accept");
-    //     }
-
-
-
-    //     connect(msgsock, (struct sockaddr*)&server, sizeof(server));
-
-
-
-    //    // new thread
-    //     cout <<"creating thread" <<endl;
-
-    //     ServerThread* serverThread = new ServerThread(msgsock);
-    //     serverThread -> run();
-    // }
-
-    close(msgsock);
+        Request* request   = serverThread -> getRequest(); /// serVerthread return req
+        cout<<"1"<<endl;
+        Response* response = serverThread -> getResponse();
+          cout<<"2"<<endl;
+        string responseStr = response-> sendBack("");
+          cout<<"3"<<endl;
+        char* resPtr       = const_cast<char *>(responseStr.c_str());
+          cout<<"4"<<endl;
+        currentSocket -> sendResponse(resPtr);
+          cout<<"5"<<endl;
+        cout << ":request in main"<< endl;
+          cout<<"6"<<endl;
+        close(currentSocket->getSocket());
+    }
+    close(socket->getPort());
 
 
 cout<<"here"<<endl;
