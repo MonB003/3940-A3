@@ -41,6 +41,7 @@ void Request::loopLine(string line, map<string, string> FormDataMap)
                 key += *it;
                 if (key == "GET")
                 {
+                    reqType = "GET";
                     key = "Request";
                     value = "GET";
                     break;
@@ -50,23 +51,29 @@ void Request::loopLine(string line, map<string, string> FormDataMap)
         it++;
     }
 
-    auto pair = make_pair(key, value);
-   // FormDataMap.insert({key,value});
-    FormDataMap.insert(pair);    
+    //auto pair = make_pair(key, value);
+    FormDataMap.insert({key,value});
+    //FormDataMap.insert(pair);    
 
 }
 
 string Request::getReqMethod()
 {
-    cout << "here 1" << endl;
 
-    auto pair = FormDataMap.find("Request");
-    cout << "here 2" << endl;
+    cout << "in map" << endl;
 
-   
-    string reqType = pair->second;
+    auto it = FormDataMap.begin();
 
-    cout << "Request type: " <<(reqType) << endl;
+    while(it != FormDataMap.end()){
+        cout << "first: " << it->first <<endl;
+        cout<< "second: " << it->second << endl; 
+        it++;
+
+    }
+
+    // auto pair = FormDataMap.find("Request");
+    // string request = pair->second;
+    // cout << "Request type: " <<request << endl;
 
     return reqType;
 }
@@ -119,6 +126,4 @@ void Request::parsePayload(istringstream *inStream)
 
         currentLength += tokenLength;
     }
-
-    //auto it = FormDataMap.begin();
 }

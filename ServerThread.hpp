@@ -4,7 +4,8 @@
 #include <sys/socket.h>
 #include <iostream>
 #include <sstream>
-
+#include "Servlet.hpp"
+#include "UploadServlet.hpp"
 
 //constexpr string url ="localhost:8888";
 
@@ -23,7 +24,7 @@ public:
 
     void run();
 
-    void runMethod(string &method,  Response *res,  Request *req);
+    void runMethod(string &method,  Response *res,  Request *req, Servlet &up);
 
     ~ServerThread() = default;
 

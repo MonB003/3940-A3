@@ -5,11 +5,11 @@
 
 using namespace std;
 
-class Client{
+class ClientServlet {
 
 
 public:
-    Client();
+    ClientServlet();
     void getUserInput();
 
 private:

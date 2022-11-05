@@ -1,9 +1,9 @@
-#include "Client.hpp"
+#include "ClientServlet.hpp"
 
 
-Client::Client(){};
+ClientServlet::ClientServlet(){};
 
-void Client::getUserInput() {
+void ClientServlet::getUserInput() {
     cout << "Please enter the file path for the image:" << endl;
     cin >> imagePath;
     cout << "Image Path: " << imagePath << endl;

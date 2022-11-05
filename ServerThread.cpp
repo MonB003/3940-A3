@@ -16,42 +16,66 @@ int ServerThread::renderHTML()
     return send_res;
 }
 
+void ServerThread::runMethod(string &method, Response *res, Request *req, Servlet &up)
+{
+    if (method == "GET") {
+        cout << "-------------------------------2. METHOD: " << method << endl;
+        int responseInt = up.get(*res, *req);
 
-void ServerThread::runMethod(string &method,  Response *res,  Request *req){
-    cout<< "in method call" <<endl;
+
+        // if (responseInt != -1) {
+
+        // }
+
+        // char buffer[1024 * 1024];
+        // int receiveInt = recv(up.getSocket(), &buffer, 1024 * 1024, 0);
+        cout <<"Response int: "<<responseInt << endl;
+
+        
+    } else {
+        cout <<"-------------------------------3. METHOD: " << method<<endl;
+        up.get(*res, *req);
+        up.post(*res, *req);
+    }
+
+    cout << "in method call" << endl;
 }
 
 void ServerThread::run()
 {
     char buffer[1024 * 1024];
 
+    // writes to the socket 
     recv(msgsocket, &buffer, 1024 * 1024, 0);
 
     // istringstream requestInfo = buffer.c_str();
     istringstream requestInfo(buffer);
     istringstream *reqPtr = &requestInfo;
 
-    cout << "ONE" <<endl;
-    // create upload servlet here.
-    renderHTML();
+    // Servlet *up = nullptr;
+
+    UploadServlet *up = new UploadServlet{msgsocket};
+
     ostringstream *outputWriter = new ostringstream();
-        cout << "TWO" <<endl;
-
-    Response *response          = new Response(msgsocket, outputWriter);
-            cout << "THREE" <<endl;
-
-    Request *request            = new Request(reqPtr);
-            cout << "FOUR" <<endl;
-
-        cout << "FIVE" <<endl;
-
+    Response *response = new Response(msgsocket, outputWriter);
+    Request *request = new Request(reqPtr);
     string requestMethod = request->getReqMethod();
-    cout << "METHOD: [" << requestMethod <<"]"  <<endl;
-    //runMethod(method, response, request);
+    cout << "METHOD: [" << requestMethod << "]" << endl;
+
+
+    string locationOfRequest = request -> getUserAgent();
+
+    // if (locationOfRequest == "browser")
+    // {
+    //     up = (UploadServlet) new UploadServlet();
+    // }
+    // else if (locationOfRequest == "cli")
+    // {
+    //     // up = new ClientServlet();
+    // }
+    runMethod(requestMethod, response, request, *up);
 
     // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
 
     cout << "here in run method" << endl;
-    // we should distinguish between get and post here.....
-   // int res = renderHTML();
 }

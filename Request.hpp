@@ -6,6 +6,7 @@
 #include <map>
 #include <iterator>
 #include <algorithm>
+// #include "Servlet.hpp"
 
 using namespace std;
 
@@ -13,11 +14,13 @@ class Request
 {
 private:
     istringstream *inputStream;
-    string reqType;
     string reqUserAgent;
     map<string, string> FormDataMap;
     string imageByteCode;
 public:
+
+    string reqType;
+
     Request();
 
     Request(istringstream *inStream);
