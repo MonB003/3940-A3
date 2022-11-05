@@ -77,18 +77,12 @@ int main() {
         serverThread -> run();
 
         Request* request   = serverThread -> getRequest(); /// serVerthread return req
-        cout<<"1"<<endl;
         Response* response = serverThread -> getResponse();
-          cout<<"2"<<endl;
         string responseStr = response-> sendBack("");
-          cout<<"3"<<endl;
         char* resPtr       = const_cast<char *>(responseStr.c_str());
-          cout<<"4"<<endl;
         currentSocket -> sendResponse(resPtr);
-          cout<<"5"<<endl;
-        cout << ":request in main"<< endl;
-          cout<<"6"<<endl;
-        close(currentSocket->getSocket());
+        
+        // close(currentSocket->getSocket());
     }
     close(socket->getPort());
 
