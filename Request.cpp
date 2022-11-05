@@ -5,16 +5,17 @@ Request::Request(){};
 Request::Request(istringstream *inStream)
 {
     inputStream = inStream;
-    // Create a method to parse incoming request payload
     parsePayload(inputStream);
+    FormDataMap = map<string,string>();
 }
 
-void Request::loopLine(string line, multimap<string, string> FormDataMap)
+void Request::loopLine(string line, map<string, string> FormDataMap)
 {
     auto it = line.begin();
     string key = "";
     string value = "";
     bool flag = false;
+
     while (it != line.end())
     {
         if ((*it == ':' || *it == '/') && !flag)
@@ -46,12 +47,13 @@ void Request::loopLine(string line, multimap<string, string> FormDataMap)
                 }
             }
         }
-
         it++;
     }
 
     auto pair = make_pair(key, value);
-    FormDataMap.insert(pair);
+   // FormDataMap.insert({key,value});
+    FormDataMap.insert(pair);    
+
 }
 
 string Request::getReqMethod()
@@ -61,11 +63,10 @@ string Request::getReqMethod()
     auto pair = FormDataMap.find("Request");
     cout << "here 2" << endl;
 
+   
     string reqType = pair->second;
-    cout << "here 3" << endl;
 
-    cout << "Request type: " << reqType << endl;
-    cout << "here 4" << endl;
+    cout << "Request type: " <<(reqType) << endl;
 
     return reqType;
 }
@@ -119,5 +120,5 @@ void Request::parsePayload(istringstream *inStream)
         currentLength += tokenLength;
     }
 
-    auto it = FormDataMap.begin();
+    //auto it = FormDataMap.begin();
 }

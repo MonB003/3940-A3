@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <iterator>
+#include <algorithm>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ private:
     istringstream *inputStream;
     string reqType;
     string reqUserAgent;
-    multimap<string, string> FormDataMap;
+    map<string, string> FormDataMap;
     string imageByteCode;
 public:
     Request();
@@ -56,7 +57,7 @@ public:
         return imageByteCode;
     }
 
-    void loopLine(string line, multimap<string, string> FormDataMap);
+    void loopLine(string line, map<string, string> FormDataMap);
 
 
 };

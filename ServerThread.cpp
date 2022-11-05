@@ -43,11 +43,11 @@ void ServerThread::run()
     Request *request            = new Request(reqPtr);
             cout << "FOUR" <<endl;
 
-  //  string method               = request -> getReqMethod(); // gets the request method from our parsed data.
         cout << "FIVE" <<endl;
 
-    cout << "METHOD: " << request->getReqMethod() <<endl;
-    runMethod(method, response, request);
+    string requestMethod = request->getReqMethod();
+    cout << "METHOD: [" << requestMethod <<"]"  <<endl;
+    //runMethod(method, response, request);
 
     // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
 
