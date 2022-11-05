@@ -3,6 +3,8 @@
 #include <sstream>
 #include "Socket.hpp"
 #include <iostream>
+#include <ostream>
+
 #include <ctime>
 #include <fstream>
 
@@ -17,7 +19,9 @@ public:
 
     Response(Socket socket, ostringstream *outStream);
 
-    void send(string page);
+    Response(int socket, ostringstream *outStream);
+
+    string sendBack(string page);
 
     void createHeader();
 
