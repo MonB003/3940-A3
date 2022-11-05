@@ -1,7 +1,9 @@
-#include "Socket.hpp"
-#include "ServerSocket.hpp"
-#include "Thread.hpp"
-#include "ServerThread.hpp"
+#include "Socket/Socket.hpp"
+#include "Socket/ServerSocket.hpp"
+#include "Server/Thread.hpp"
+#include "Server/ServerThread.hpp"
+#include "Sock
+
 
 #include <stddef.h>
 #include <sys/socket.h>

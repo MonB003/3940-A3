@@ -1,4 +1,4 @@
-#include "ServerThread.hpp"
+#include "Server/ServerThread.hpp"
 
 ServerThread::ServerThread(int msgSock) : Thread(this)
 {
@@ -41,3 +41,4 @@ void ServerThread::run()
     int res = renderHTML();
     cout << res << endl;
 }
+o
