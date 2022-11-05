@@ -30,7 +30,7 @@ void ServerThread::run()
     // istringstream requestInfo = buffer.c_str();
     istringstream requestInfo(buffer);
     istringstream *reqPtr = &requestInfo;
-    cout << buffer << endl;
+    //cout << buffer << endl;
 
     Request *req = new Request(reqPtr);
 
