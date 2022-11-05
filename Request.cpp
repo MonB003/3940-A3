@@ -6,6 +6,7 @@ Request::Request(istringstream *inStream)
 {
     inputStream = inStream;
     parsePayload(inputStream);
+    // parsePayload2(inputStream);
     FormDataMap = map<string,string>();
 }
 
@@ -127,3 +128,52 @@ void Request::parsePayload(istringstream *inStream)
         currentLength += tokenLength;
     }
 }
+
+
+
+
+void Request::parsePayload2(istringstream* inStream){
+        cout << "Parsing Payload" << endl;
+        string intermediate;
+        string reqType;
+        string boundary;
+        string userAgent;
+        string caption;
+        string date;
+        while (*inStream >> intermediate){
+            cout << intermediate << endl;
+
+            if(intermediate.find("POST") != std::string::npos){
+                cout << intermediate << endl;
+                reqType = intermediate;
+            }
+            if(intermediate.find("boundary=") != std::string::npos){
+                cout << intermediate << endl;
+                boundary = intermediate;
+            }
+            if(intermediate.find("User-Agent:") != std::string::npos){
+                *inStream >> intermediate;
+                cout << intermediate << endl;
+                userAgent = intermediate;
+
+            }
+            if(intermediate.find("name=\"caption\"") != std::string::npos){
+                *inStream >> intermediate;
+                cout << intermediate << endl;
+                caption = intermediate;
+
+            }
+            if(intermediate.find("name=\"date\"") != std::string::npos){
+                *inStream >> intermediate;
+                cout << intermediate << endl;
+                date = intermediate;
+
+            }
+        }
+        boundary = "--" + boundary.substr(9,boundary.length());
+        cout << "RequestType: " << reqType << endl;
+        cout << "Boundary: " << boundary << endl;
+        cout << "UserAgent: " << userAgent << endl;
+        cout << "Caption: " << caption << endl;
+        cout << "Date: " << date << endl;
+    }

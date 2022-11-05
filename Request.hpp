@@ -63,4 +63,5 @@ public:
     void loopLine(string line, map<string, string> FormDataMap);
 
 
+    void parsePayload2(istringstream* inStream);
 };

@@ -82,7 +82,7 @@ int main() {
         char* resPtr       = const_cast<char *>(responseStr.c_str());
         currentSocket -> sendResponse(resPtr);
         
-        // close(currentSocket->getSocket());
+        close(currentSocket->getSocket());
     }
     close(socket->getPort());
 
