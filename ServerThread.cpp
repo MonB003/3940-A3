@@ -81,6 +81,9 @@ string ServerThread::run()
     // runMethod(requestMethod, response, request, *up);
 
 
+    //cout << buffer << endl;
+
+    Request *req = new Request(reqPtr);
 
     // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
    return requestMethod;
