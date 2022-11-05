@@ -16,13 +16,13 @@ int ServerThread::renderHTML()
     return send_res;
 }
 
+
+void ServerThread::runMethod(string &method,  Response *res,  Request *req){
+    cout<< "in method call" <<endl;
+}
+
 void ServerThread::run()
 {
-
-    // string get_http = "GET / HTTP/1.1\r\nHost: " + url + "\r\nConnection: close\r\n\r\n";
-
-    // res = new Response(msgsocket); // socket stream in
-
     char buffer[1024 * 1024];
 
     recv(msgsocket, &buffer, 1024 * 1024, 0);
@@ -30,14 +30,28 @@ void ServerThread::run()
     // istringstream requestInfo = buffer.c_str();
     istringstream requestInfo(buffer);
     istringstream *reqPtr = &requestInfo;
-    cout << buffer << endl;
-    int res = renderHTML();
-    Request *req = new Request(reqPtr);
+
+    cout << "ONE" <<endl;
+    // create upload servlet here.
+    renderHTML();
+    ostringstream *outputWriter = new ostringstream();
+        cout << "TWO" <<endl;
+
+    Response *response          = new Response(msgsocket, outputWriter);
+            cout << "THREE" <<endl;
+
+    Request *request            = new Request(reqPtr);
+            cout << "FOUR" <<endl;
+
+  //  string method               = request -> getReqMethod(); // gets the request method from our parsed data.
+        cout << "FIVE" <<endl;
+
+    cout << "METHOD: " << request->getReqMethod() <<endl;
+    runMethod(method, response, request);
 
     // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
 
     cout << "here in run method" << endl;
     // we should distinguish between get and post here.....
    // int res = renderHTML();
-    cout << res << endl;
 }

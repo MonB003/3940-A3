@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <sstream>
-// #include <unordered_map>
 #include <string>
 #include <map>
 #include <iterator>
@@ -34,12 +33,7 @@ public:
         reqUserAgent = userAgent;
     }
 
-    string getReqMethod()
-    {
-        auto pair = *FormDataMap.find("Request");
-        string reqType = pair.second;
-        return reqType;
-    }
+    string getReqMethod();
 
     string getUserAgent()
     {

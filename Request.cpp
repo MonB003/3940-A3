@@ -17,27 +17,30 @@ void Request::loopLine(string line, multimap<string, string> FormDataMap)
     bool flag = false;
     while (it != line.end())
     {
-        if ((*it == ':'|| *it == '/') && !flag)
+        if ((*it == ':' || *it == '/') && !flag)
         {
             it++;
             flag = true;
-
         }
         else
         {
             if (flag)
             {
-                if(*it == '\r' || *it == '\n'){
+                if (*it == '\r' || *it == '\n')
+                {
                     break;
-                } else {
-                value += *it;
+                }
+                else
+                {
+                    value += *it;
                 }
             }
             else
             {
-                key += *it; 
-                if(key == "GET"){
-                    key ="Request";
+                key += *it;
+                if (key == "GET")
+                {
+                    key = "Request";
                     value = "GET";
                     break;
                 }
@@ -47,18 +50,29 @@ void Request::loopLine(string line, multimap<string, string> FormDataMap)
         it++;
     }
 
-    cout << "Key [" <<key<<"]" <<endl;
-    cout << "Val: [" <<value <<"]"<<endl;
-    auto pair = make_pair(key,value);
+    auto pair = make_pair(key, value);
     FormDataMap.insert(pair);
+}
+
+string Request::getReqMethod()
+{
+    cout << "here 1" << endl;
+
+    auto pair = FormDataMap.find("Request");
+    cout << "here 2" << endl;
+
+    string reqType = pair->second;
+    cout << "here 3" << endl;
+
+    cout << "Request type: " << reqType << endl;
+    cout << "here 4" << endl;
+
+    return reqType;
 }
 
 void Request::parsePayload(istringstream *inStream)
 {
     string savedByteCode = "";
-
-    cout << "PARSE PAYLOAD" << endl;
-    cout << "The Request Type is: " << endl;
     string temp = "";
     string dataKeys[] = {"Date", "Keyword", "Caption", "File"};
     int currentKey = 0;
@@ -84,29 +98,9 @@ void Request::parsePayload(istringstream *inStream)
 
     char c;
     string line;
-  
-
-    // istringstream iss(line);
-
-    // string url;
-    // string version;
-    // iss >> reqType;
-    // cout <<"the request is: " << line <<endl;
-    // iss >> url;
-    // iss >> version;
-    // string reqType;
-    //   getline(*inStream, reqType);
-    //     cout <<"the request is: " << reqType <<endl;
-
-
-
-    // *inStream >> url;
-    // *inStream >> version;
 
     while (getline(*inStream, line))
     {
-
-        cout << "LINE: " << line << endl;
 
         loopLine(line, FormDataMap); // loops each line and parses it into a pair.
 
@@ -125,18 +119,5 @@ void Request::parsePayload(istringstream *inStream)
         currentLength += tokenLength;
     }
 
-    cout << "USER AGENT:   " << reqUserAgent << endl;
-
-    cout << "WERE FREEEEEE" << endl;
-
     auto it = FormDataMap.begin();
-
-    while (it != FormDataMap.end())
-    {
-
-        cout << "FIRST: " << it->first << endl;
-
-        cout << "SECOND: " << it->second << endl;
-        it++;
-    }
 }
