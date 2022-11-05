@@ -27,7 +27,7 @@ public:
         return oStream;
     }
 
-    char* createByteArray();
+    unsigned char* createByteArray();
     
     ostringstream* getByteArray();
 

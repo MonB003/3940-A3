@@ -2,11 +2,39 @@
 
 Request::Request(){};
 
-Request::Request(istringstream *inStream){
+Request::Request(istringstream *inStream)
+{
     inputStream = inStream;
     // Create a method to parse incoming request payload
     parsePayload(inputStream);
 }
+
+void Request::loopLine(string line, multimap<string, string> FormDataMap){
+
+    auto it = line.begin();
+    string key="";
+    string value="";
+    while(it != line.end()) {
+
+        key += *it;
+        cout << *it ;
+        if(*it == ':'){
+            cout << endl;
+            it++;
+            value += *it;
+        }
+        
+        it++;
+    }
+
+        cout << "Value: " << value << endl;
+        cout << "Data: " << *it <<endl;
+        value ="";
+        key = "";
+    
+
+}
+
 
 void Request::parsePayload(istringstream *inStream)
 {
@@ -19,10 +47,10 @@ void Request::parsePayload(istringstream *inStream)
     int currentKey = 0;
     int maxKey = 4;
     bool endOfDataReached = false;
-    char c;
     int totalLengthOfPayload = 0;
-    
-    while (*inStream >> temp){
+
+    while (*inStream >> temp)
+    {
         totalLengthOfPayload += temp.size();
     }
 
@@ -38,42 +66,35 @@ void Request::parsePayload(istringstream *inStream)
     string title;
     string value;
 
+    char c;
+    string line;
+    getline(*inStream,line);
+
+    istringstream iss(line);
+    
     string url;
     string version;
-    *inStream >> reqType;
-    *inStream >> url;
-    *inStream >> version;
-
-    while (*inStream >> temp)
+    iss >> reqType;
+    iss >> url;
+    iss >> version;
+    // *inStream >> reqType;
+    // *inStream >> url;
+    // *inStream >> version;
+    
+    while (getline(*inStream,line))
     {
 
-        if (index % 2 == 0)
-        {
-            title = temp;
-            cout << "VAR TITLE: " << title << endl;
-        }
-        else
-        {
-            value = temp;
-            cout << "VALUE: " << value << endl;
+        cout << "LINE: " << line << endl;
 
-            pair<string, string> currentData = make_pair(title, value);
-            FormDataMap.insert(currentData);
-        }
-
-        index++;
+        loopLine(line, FormDataMap); // loops each line and parses it into a pair.
+      
         int tokenLength = temp.size();
-        //     cout << "TOKEN: " << temp <<"------------------" <<endl;
 
-        if (temp.find("User-Agent:"))
-        {
-
+        if (temp.find("User-Agent:")){
             reqUserAgent = "browser";
-            // cout << "BROWSER FOUND" << endl;
         }
 
-        if (currentLength == totalLengthOfPayload)
-        {
+        if (currentLength == totalLengthOfPayload){
             break;
         }
 
@@ -87,11 +108,11 @@ void Request::parsePayload(istringstream *inStream)
     auto it = FormDataMap.begin();
 
     while (it != FormDataMap.end())
-    {   
-        
+    {
+
         cout << "FIRST: " << it->first << endl;
 
-        cout <<"SECOND: " <<  it->second << endl;
+        cout << "SECOND: " << it->second << endl;
         it++;
     }
 }

@@ -44,16 +44,18 @@ public:
         return inputStream;
     }
 
-    string getFormData(string key)
+    pair<string, string> getFormData(string key)
     {
-        // string found = FormDataMap.find(key);
-        return FormDataMap.at(key);
+        // string found = FormDataMap.at(key);
+        return *FormDataMap.find(key);
     }
 
     string getImageByteCode()
     {
         return imageByteCode;
     }
+
+    void loopLine(string line, multimap<string, string> FormDataMap);
 
 private:
     istringstream *inputStream;
