@@ -11,7 +11,12 @@ using namespace std;
 
 class Request
 {
-
+private:
+    istringstream *inputStream;
+    string reqType;
+    string reqUserAgent;
+    multimap<string, string> FormDataMap;
+    string imageByteCode;
 public:
     Request();
 
@@ -31,6 +36,8 @@ public:
 
     string getReqMethod()
     {
+        auto pair = *FormDataMap.find("Request");
+        string reqType = pair.second;
         return reqType;
     }
 
@@ -57,10 +64,5 @@ public:
 
     void loopLine(string line, multimap<string, string> FormDataMap);
 
-private:
-    istringstream *inputStream;
-    string reqType;
-    string reqUserAgent;
-    multimap<string, string> FormDataMap;
-    string imageByteCode;
+
 };

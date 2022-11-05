@@ -9,32 +9,49 @@ Request::Request(istringstream *inStream)
     parsePayload(inputStream);
 }
 
-void Request::loopLine(string line, multimap<string, string> FormDataMap){
-
+void Request::loopLine(string line, multimap<string, string> FormDataMap)
+{
     auto it = line.begin();
-    string key="";
-    string value="";
-    while(it != line.end()) {
-
-        key += *it;
-        cout << *it ;
-        if(*it == ':'){
-            cout << endl;
+    string key = "";
+    string value = "";
+    bool flag = false;
+    while (it != line.end())
+    {
+        if ((*it == ':'|| *it == '/') && !flag)
+        {
             it++;
-            value += *it;
+            flag = true;
+
         }
-        
+        else
+        {
+            if (flag)
+            {
+                if(*it == '\r' || *it == '\n'){
+                    break;
+                } else {
+                value += *it;
+                }
+            }
+            else
+            {
+                key += *it; 
+                if(key == "GET"){
+                    key ="Request";
+                    value = "GET";
+                    break;
+                }
+            }
+        }
+
         it++;
     }
 
-        cout << "Value: " << value << endl;
-        cout << "Data: " << *it <<endl;
-        value ="";
-        key = "";
-    
-
+    cout << "Key [" <<key<<"]" <<endl;
+    cout << "Val: [" <<value <<"]"<<endl;
+    auto pair = make_pair(key,value);
+    FormDataMap.insert(pair);
 }
-
 
 void Request::parsePayload(istringstream *inStream)
 {
@@ -60,7 +77,6 @@ void Request::parsePayload(istringstream *inStream)
     inStream->clear();
     inStream->seekg(0);
 
-    int index = 0;
     string requestType;
 
     string title;
@@ -68,33 +84,41 @@ void Request::parsePayload(istringstream *inStream)
 
     char c;
     string line;
-    getline(*inStream,line);
+  
 
-    istringstream iss(line);
-    
-    string url;
-    string version;
-    iss >> reqType;
-    iss >> url;
-    iss >> version;
-    // *inStream >> reqType;
+    // istringstream iss(line);
+
+    // string url;
+    // string version;
+    // iss >> reqType;
+    // cout <<"the request is: " << line <<endl;
+    // iss >> url;
+    // iss >> version;
+    // string reqType;
+    //   getline(*inStream, reqType);
+    //     cout <<"the request is: " << reqType <<endl;
+
+
+
     // *inStream >> url;
     // *inStream >> version;
-    
-    while (getline(*inStream,line))
+
+    while (getline(*inStream, line))
     {
 
         cout << "LINE: " << line << endl;
 
         loopLine(line, FormDataMap); // loops each line and parses it into a pair.
-      
+
         int tokenLength = temp.size();
 
-        if (temp.find("User-Agent:")){
+        if (temp.find("User-Agent:"))
+        {
             reqUserAgent = "browser";
         }
 
-        if (currentLength == totalLengthOfPayload){
+        if (currentLength == totalLengthOfPayload)
+        {
             break;
         }
 
