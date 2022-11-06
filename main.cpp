@@ -75,7 +75,6 @@ int main() {
         Socket *currentSocket = socket -> Accept(); 
         ServerThread* serverThread = new ServerThread(currentSocket);
         serverThread -> run();
-
         Request* request   = serverThread -> getRequest(); /// serVerthread return req
         Response* response = serverThread -> getResponse();
         string responseStr = response-> sendBack("");
