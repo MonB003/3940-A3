@@ -17,8 +17,7 @@ class ServerThread : public Thread
 {
 
 public:
-     //ServerThread(int msgSock);
-     ServerThread(Socket* msgSock);
+    ServerThread(Socket* msgSock);
     int renderHTML();
 
     void parseRequest();
@@ -28,7 +27,7 @@ public:
     void runMethod(string &method,  Response *res,  Request *req, Servlet &up);
 
     ~ServerThread() = default;
-    Request* getRequest(){
+    Request* getRequestObject(){
         return this->request;
     }
 

@@ -26,8 +26,6 @@ class UploadServlet : public Servlet {
 
 private:
     int socket;
-
-
 public:
     UploadServlet(int socket);
     UploadServlet() = default;
@@ -37,7 +35,7 @@ public:
     
     void post(Response &response, Request &request) override;
     
-    int get(Response &response, Request &request) override;
+    string get(Response &response, Request &request) override;
     string getListing(); 
 
 };

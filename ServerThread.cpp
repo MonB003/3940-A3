@@ -20,7 +20,7 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
 {
     if (method == "GET") {
         cout << "-------------------------------2. METHOD: " << method << endl;
-        int responseInt = up.get(*res, *req);
+        // int responseInt = up.get(*res, *req);
         
 
         // if (responseInt != -1) {
@@ -29,12 +29,12 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
 
         // char buffer[1024 * 1024];
         // int receiveInt = recv(up.getSocket(), &buffer, 1024 * 1024, 0);
-        cout <<"Response int: "<<responseInt << endl;
+        // cout <<"Response int: "<<responseInt << endl;
 
         
     } else {
         cout <<"-------------------------------3. METHOD: " << method<<endl;
-        up.get(*res, *req);
+        // up.get(*res, *req);
         up.post(*res, *req);
     }
 
@@ -78,7 +78,7 @@ string ServerThread::run()
 
 
 
-    // runMethod(requestMethod, response, request, *up);
+    runMethod(requestMethod, response, request, *up);
 
 
 

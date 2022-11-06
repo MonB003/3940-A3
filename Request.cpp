@@ -5,8 +5,8 @@ Request::Request(){};
 Request::Request(istringstream *inStream)
 {
     inputStream = inStream;
-    // parsePayload(inputStream);
-    parsePayload2(inputStream);
+    parsePayload(inputStream);
+    // parsePayload2(inputStream);
     FormDataMap = map<string,string>();
 }
 
@@ -46,6 +46,10 @@ void Request::loopLine(string line, map<string, string> FormDataMap)
                     key = "Request";
                     value = "GET";
                     break;
+                } else if (key == "POST") {
+                    reqType = "POST";
+                    key = "Request";
+                    value = "POST";
                 }
             }
         }
@@ -55,7 +59,6 @@ void Request::loopLine(string line, map<string, string> FormDataMap)
     //auto pair = make_pair(key, value);
     FormDataMap.insert({key,value});
     //FormDataMap.insert(pair);    
-
 }
 
 string Request::getReqMethod()
@@ -113,6 +116,8 @@ void Request::parsePayload(istringstream *inStream)
 
         loopLine(line, FormDataMap); // loops each line and parses it into a pair.
 
+        cout << line << endl;
+
         int tokenLength = temp.size();
 
         if (temp.find("User-Agent:"))
@@ -140,6 +145,10 @@ void Request::parsePayload2(istringstream* inStream){
     string userAgent;
     string caption;
     string date;
+
+    inStream->clear();
+    inStream->seekg(0);
+
     while (*inStream >> intermediate){
         cout << intermediate << endl;
 
