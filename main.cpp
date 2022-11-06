@@ -39,9 +39,9 @@ int main() {
 
     while(socket != NULL){          
         Socket *currentSocket = socket -> Accept(); 
-        string test = currentSocket-> getRequest();
+
         ServerThread* serverThread = new ServerThread(currentSocket);
-        serverThread -> run();
+       // serverThread -> run();
 
         Request* request   = serverThread -> getRequestObject(); /// serVerthread return req
         Response* response = serverThread -> getResponse();
@@ -49,8 +49,10 @@ int main() {
         char* resPtr       = const_cast<char *>(responseStr.c_str());
 
         currentSocket -> sendResponse(resPtr);
-        
-        close(currentSocket->getSocket());
+     
+     //shutting down the socket.
+        // shutdown(currentSocket->getSocket() ,SHUT_WR);
+       close(currentSocket->getSocket());
     }
     close(socket->getPort());
 

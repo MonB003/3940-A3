@@ -23,7 +23,7 @@ public:
     void parseRequest();
 
     string run();
-
+    void getDataFromSocket(Socket* messageSocket);
     void runMethod(string &method,  Response *res,  Request *req, Servlet &up);
 
     ~ServerThread() = default;

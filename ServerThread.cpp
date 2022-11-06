@@ -1,8 +1,9 @@
 #include "ServerThread.hpp"
 
-ServerThread::ServerThread(Socket* msgSock) : Thread(this)
+ServerThread::ServerThread(Socket *msgSock) : Thread(this)
 {
     this->msgsocket = msgSock;
+    run();
 }
 
 int ServerThread::renderHTML()
@@ -18,10 +19,10 @@ int ServerThread::renderHTML()
 
 void ServerThread::runMethod(string &method, Response *res, Request *req, Servlet &up)
 {
-    if (method == "GET") {
+    if (method == "GET")
+    {
         cout << "-------------------------------2. METHOD: " << method << endl;
         // int responseInt = up.get(*res, *req);
-        
 
         // if (responseInt != -1) {
 
@@ -31,9 +32,11 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
         // int receiveInt = recv(up.getSocket(), &buffer, 1024 * 1024, 0);
         // cout <<"Response int: "<<responseInt << endl;
 
-        
-    } else {
-        cout <<"-------------------------------3. METHOD: " << method<<endl;
+        //
+    }
+    else
+    {
+        cout << "-------------------------------3. METHOD: " << method << endl;
         // up.get(*res, *req);
         up.post(*res, *req);
     }
@@ -43,45 +46,27 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
 
 string ServerThread::run()
 {
-    char buffer[1024 * 1024];
+    string output = msgsocket->getRequest();
+ 
 
-    // writes to the socket 
-    recv(msgsocket->getSocket(), &buffer, 1024 * 1024, 0);
+    // istringstream requestInfo;
+    // requestInfo.str(output);
+    // istringstream *reqPtr = &requestInfo;
 
-    // istringstream requestInfo = buffer.c_str();
-    istringstream requestInfo(buffer);
-    istringstream *reqPtr = &requestInfo;
+    // UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
 
-    // Servlet *up = nullptr;
-
-    UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
-
-    ostringstream *outputWriter = new ostringstream();
-    response = new Response(msgsocket->getSocket(), outputWriter);
-    request = new Request(reqPtr);
-
-   
-    string requestMethod = request->getReqMethod();
-    cout << "METHOD: [" << requestMethod << "]" << endl;
+    // ostringstream *outputWriter = new ostringstream();
+    // response = new Response(msgsocket->getSocket(), outputWriter);
+    // request = new Request(reqPtr);
 
 
-    string locationOfRequest = request -> getUserAgent();
-
-    // if (locationOfRequest == "browser")
-    // {
-    //     up = (UploadServlet) new UploadServlet();
-    // }
-    // else if (locationOfRequest == "cli")
-    // {
-    //     // up = new ClientServlet();
-    // }
+    // string requestMethod = request->getReqMethod();
+    // cout << "METHOD: [" << requestMethod << "]" << endl;
 
 
+    // string locationOfRequest = request -> getUserAgent();
 
-    runMethod(requestMethod, response, request, *up);
+//    return requestMethod;
 
-
-
-    // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
-   return requestMethod;
+    return "";
 }

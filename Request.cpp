@@ -116,7 +116,7 @@ void Request::parsePayload(istringstream *inStream)
 
         loopLine(line, FormDataMap); // loops each line and parses it into a pair.
 
-        cout << line << endl;
+        // cout << line << endl;
 
         int tokenLength = temp.size();
 
