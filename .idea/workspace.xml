@@ -8,8 +8,15 @@
   <component name="ChangeListManager">
     <list default="true" id="291a482c-0a5a-4e02-89d7-10d6e01884ed" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Request.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Request.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServerThread.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ServerThread.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Socket.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Socket.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ClientServlet.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ClientServlet.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.exe" beforeDir="false" afterPath="$PROJECT_DIR$/main.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.exe.stackdump" beforeDir="false" afterPath="$PROJECT_DIR$/main.exe.stackdump" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

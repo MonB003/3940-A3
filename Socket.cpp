@@ -10,7 +10,7 @@ string Socket::getRequest()
   char buffer[1024 * 1024];
 
   recv(sock, &buffer, 1024 * 1024, 0);
-  
+
   cout <<"buffer sending back..." <<endl;
   cout << "buff: " << buffer << endl;
 
@@ -23,7 +23,7 @@ int rval;
   if ((rval = write(sock, res, strlen(res))) < 0){
     perror("writing socket");
   }else  {
-    
+
     printf("%s\n",res);
     //close(this->sock);
   }

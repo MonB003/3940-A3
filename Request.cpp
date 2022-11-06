@@ -130,8 +130,6 @@ void Request::parsePayload(istringstream *inStream)
 }
 
 
-
-
 void Request::parsePayload2(istringstream* inStream){
     cout << "Parsing Payload" << endl;
     string intermediate;

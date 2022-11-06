@@ -19,6 +19,7 @@
 #include <netdb.h>
 #include <string>
 #include <cstring>
+#include "ClientServlet.hpp"
 
 
 using namespace std;
@@ -27,6 +28,9 @@ using namespace std;
     main function.
 */
 int main() {
+    // ClientServlet *client = new ClientServlet();
+    // client->getUserInput();
+    // client->POSTRequest();
 
     struct sockaddr_in server;
     int msgsock;
@@ -90,7 +94,4 @@ int main() {
 cout<<"here"<<endl;
     return 0;
 }
-
-
-
 
