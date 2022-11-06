@@ -68,21 +68,23 @@ int main() {
     // listen(listening, 5);
 
     ServerSocket *socket = new ServerSocket(8889); // socket creation.
-        cout<<"not in loop"<<endl;
-    if(socket == NULL){
-        cout<<"UH OH"<<endl;
-    }
 
-    while(socket != NULL){
-          cout<<"NOT NULL"<<endl;
-          
+    while(socket != NULL){          
         Socket *currentSocket = socket -> Accept(); 
         ServerThread* serverThread = new ServerThread(currentSocket);
-        serverThread -> run();
+        serverThread->readSocket();
+        // serverThread -> run();
+
+        cout << "MAIN: AFTER RUN" << endl;
 
         Request* request   = serverThread -> getRequest(); /// serVerthread return req
+        cout << "MAIN: AFTER REQUEST" << endl;
         Response* response = serverThread -> getResponse();
+
+        cout << "MAIN: BEFORE SEND BACK" << endl;
+
         string responseStr = response-> sendBack("");
+        cout << "MAIN: AFTER SEND BACK" << endl;
         char* resPtr       = const_cast<char *>(responseStr.c_str());
         currentSocket -> sendResponse(resPtr);
         

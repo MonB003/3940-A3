@@ -35,6 +35,8 @@ public:
     Response* getResponse() {
         return this->response;
     }
+
+    void readSocket();
 private:
     Socket* msgsocket; // socket reference.
     Request *request;
