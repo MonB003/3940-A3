@@ -132,6 +132,7 @@ void Request::parsePayload(istringstream *inStream)
 
 void Request::parsePayload2(istringstream* inStream){
     cout << "Parsing Payload" << endl;
+    cout << inStream->str() << endl;
     string intermediate;
     string reqType;
     string boundary;

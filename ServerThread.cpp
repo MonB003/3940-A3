@@ -44,7 +44,7 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
 string ServerThread::run()
 {
     // char buffer[1024 * 1024];
-    char* character;
+    char character[1024];
     string payload;
     string userAgent;
 
@@ -61,12 +61,14 @@ string ServerThread::run()
 
     int index = 0;
 
-    while ((recv(msgsocket->getSocket(), character, 1, 0) > 0) && (endOfData == false)) {
-        string intermediate;
+    cout << "Before RECV:" << endl;
+    while ((read(msgsocket->getSocket(), character, 1024)) && (!endOfData)) {
+        cout << "character: " << character << endl;
         // cout << *character;
         payload += character;
         if(payload.find("POST") != std::string::npos || payload.find("GET") != std::string::npos ){
             reqType = payload;
+            cout << reqType << endl;
         }
         // No Boundary in GET Requests..
         if(payload.find("boundary=") != std::string::npos && reqType == "POST"){
@@ -79,6 +81,7 @@ string ServerThread::run()
             endofFile += boundary;
             endofFile +="--";
             boundary = payload.substr(index,endIndex);
+            cout << boundary << endl;
         }
         if(payload.find("User-Agent:") != std::string::npos){
             index = payload.find("User-Agent: ");
@@ -87,6 +90,7 @@ string ServerThread::run()
                 endIndex++;
             }
             userAgent = payload;
+            cout << userAgent << endl;
         }
         if(payload.find("name=\"caption\"\n\n") != std::string::npos && reqType == "POST"){
             index = payload.find("name=\"caption\"\n\n");
@@ -96,6 +100,7 @@ string ServerThread::run()
                 endIndex++;
             }
             caption = payload.substr(index,endIndex);
+            cout << caption << endl;
         }
         if(payload.find("name=\"date\"\n\n") != std::string::npos && reqType == "POST"){
             index = payload.find("name=\"date\"\n\n");
@@ -106,17 +111,18 @@ string ServerThread::run()
             }
             date = payload.substr(index,endIndex);
             endOfData = true;
+            cout << date << endl;
         }
         if(payload.find(endofFile) != std::string::npos ){  // Last line
             endOfData = true;
         }
     }
-    cout << payload;
+    cout << "Payload: " << payload << endl;
 
     // istringstream requestInfo = buffer.c_str();
     // istringstream requestInfo(buffer);
     // istringstream requestInfo = payload.c_str();
-    istringstream requestInfo(payload);
+    istringstream requestInfo;
     istringstream *reqPtr = &requestInfo;
 
     // Servlet *up = nullptr;
@@ -125,7 +131,7 @@ string ServerThread::run()
 
     ostringstream *outputWriter = new ostringstream();
     response = new Response(msgsocket->getSocket(), outputWriter);
-    request = new Request(reqPtr);
+    request = new Request(&requestInfo);
 
 
     string requestMethod = request->getReqMethod();
