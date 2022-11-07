@@ -15,60 +15,24 @@ int ServerThread::renderHTML()
     return send_res;
 }
 
-// string ServerThread::readSocket()
-// {
-//     char character[1];
-//     string fileData;
-//     int r;
-
-//     cout << "START OF READSOCKET LOOP" << endl;
-
-//     while (r = recv(msgsocket->getSocket(), &character, 1, 0) == 1)
-//     {
-//         cout << *character << endl;
-//         fileData += *character;
-//         // cout << "R VAL: " << r << endl;
-//     }
-
-//     //     char* requestPtr = (char*)malloc(fileData.length() + 1);
-//     //     char arr[fileData.length()];
-//     //     strcpy(arr, fileData.c_str());
-
-//     //   //  cout << "FILE DATA LOOP" << endl;
-//     //     for(int i = 0; i < fileData.length(); i++){
-//     //         requestPtr[i] = arr[i];
-//     //   //      cout << "file character: " << requestPtr[i] <<endl;;
-
-//     //     }
-
-//     // requestPtr[fileData.length()] = '\0';
-//     // cout<<"---------------------------------------"<<endl;
-//     // cout << requestPtr << endl;
-
-//     return fileData;
-// }
-
-void ServerThread::runMethod(string &method, Response *res, Request *req, Servlet &up)
+string ServerThread::runMethod(string &method, Response *res, Request *req, Servlet &up)
 {
+    string responseStr;
+
     if (method == "GET")
     {
-        cout << "-------------------------------2. METHOD: " << method << endl;
-        int responseInt = up.get(*res, *req);
-
-        cout << "Response int: " << responseInt << endl;
+        responseStr = up.get(*res, *req);
     }
     else
     {
-        cout << "-------------------------------3. METHOD: " << method << endl;
-        cout << "server is doing post req....." << endl;
         up.post(*res, *req);
-        
-        
-        up.get(*res, *req);
+        responseStr = up.get(*res, *req);
     }
+
+    return responseStr;
 }
 
-string ServerThread::run()
+char * ServerThread::run()
 {
     int bufferSize = 1;
     char buf[bufferSize];
@@ -91,8 +55,6 @@ string ServerThread::run()
     bool isPost = false;
     bool firstChar = true;
 
-    bool startByteCode = false;
-    bool endByteCode = false;
     string boundaryCheckString = "";
     int bufferIndex = 0;
     bool haveCode = false;
@@ -167,52 +129,24 @@ string ServerThread::run()
     }
 
     allDataBuffer[bufferIndex] = '\0';
-    cout << "END-------------------------------------------------------------------------------------------" << endl;
-    // cout << "BUFFER: ---------------------------------- " <<endl << buf1 << endl;
 
     string finishedData{allDataBuffer};
     cout << "-------------------------------START FINISHED DATA----------------------------------" << endl;
-
     cout << finishedData << endl;
-
     cout << "-------------------------------END FINISHED DATA----------------------------------" << endl;
 
-    cout << "-----------1-------------" << endl; 
     istringstream requestInfo(finishedData.c_str());
-        cout << "-----------2-------------" << endl; 
 
-    istringstream *reqPtr = &requestInfo;
-        cout << "-----------3-------------" << endl; 
-
+    istringstream *reqPtr       = &requestInfo;
     ostringstream *outputWriter = new ostringstream();
-        cout << "-----------4-------------" << endl; 
+    response                    = new Response(msgsocket->getSocket(), outputWriter);
+    request                     = new Request(reqPtr);
+    UploadServlet *up           = new UploadServlet{msgsocket->getSocket()};
+    string requestMethod        = request->getReqMethod();
+    string responseStr          = runMethod(requestMethod, response, request, *up);
+    char *resPtr                = const_cast<char *>(responseStr.c_str());
 
-    response = new Response(msgsocket->getSocket(), outputWriter);
-        cout << "-----------5-------------" << endl; 
+   
 
-    request = new Request(reqPtr);
-        cout << "-----------6-------------" << endl; 
-
-
-    UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
-
-    string requestMethod = request->getReqMethod();
-    // cout << "METHOD: [" << requestMethod << "]" << endl;
-        cout << "-----------6-------------" << endl; 
-
-    runMethod(requestMethod, response, request, *up);
-    cout << "-----------7-------------" << endl; 
-
-    // string locationOfRequest = request -> getUserAgent();
-
-    // if (locationOfRequest == "browser")
-    // {
-    //     up = (UploadServlet) new UploadServlet();
-    // }
-    // else if (locationOfRequest == "cli")
-    // {
-    //     // up = new ClientServlet();
-    // }
-
-    return ""; // requestMethod;
+    return resPtr ;
 }

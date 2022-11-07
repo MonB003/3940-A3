@@ -23,9 +23,9 @@ public:
 
     void parseRequest();
     string readSocket();
-    string run();
+    char * run();
 
-    void runMethod(string &method,  Response *res,  Request *req, Servlet &up);
+    string runMethod(string &method,  Response *res,  Request *req, Servlet &up);
 
     ~ServerThread() = default;
     Request* getRequest(){
