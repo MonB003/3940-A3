@@ -111,7 +111,7 @@ string ServerThread::run()
 //     write(sock, buf, msgLength);
 // shutdown(sock, SHUT_WR);
 
-    renderHTML();
+    // renderHTML();
 
 
 
@@ -126,15 +126,17 @@ string ServerThread::run()
     // cout << buffer << endl;
     // istringstream requestInfo = buffer.c_str();
     // istringstream requestInfo(data.c_str());
-    // istringstream *reqPtr = &requestInfo;
+    string data = buf1;
+    istringstream requestInfo(data.c_str());
+    istringstream *reqPtr = &requestInfo;
 
-    // ostringstream *outputWriter = new ostringstream();
-    // response = new Response(msgsocket->getSocket(), outputWriter);
-    // request = new Request(reqPtr);
+    ostringstream *outputWriter = new ostringstream();
+    response = new Response(msgsocket->getSocket(), outputWriter);
+    request = new Request(reqPtr);
     // renderHTML();
-    // UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
+    UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
 
-    // string requestMethod = request->getReqMethod();
+    string requestMethod = request->getReqMethod();
     // cout << "METHOD: [" << requestMethod << "]" << endl;
 
     // string locationOfRequest = request -> getUserAgent();
@@ -148,7 +150,7 @@ string ServerThread::run()
     //     // up = new ClientServlet();
     // }
 
-    // runMethod(requestMethod, response, request, *up);
+    runMethod(requestMethod, response, request, *up);
 
     // cout << buffer << endl;
 
