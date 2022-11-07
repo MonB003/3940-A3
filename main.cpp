@@ -20,6 +20,7 @@
 #include <string>
 #include <cstring>
 
+// g++ main.cpp ServerThread.cpp Request.cpp ServerSocket.cpp Response.cpp Socket.cpp UploadServlet.cpp -o main
 
 using namespace std;
 
