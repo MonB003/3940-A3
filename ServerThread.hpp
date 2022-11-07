@@ -22,7 +22,7 @@ public:
     int renderHTML();
 
     void parseRequest();
-
+    string readSocket();
     string run();
 
     void runMethod(string &method,  Response *res,  Request *req, Servlet &up);
