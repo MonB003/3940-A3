@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
+#include "base64.hpp"
 using namespace std;
 
 class UploadServlet : public Servlet {

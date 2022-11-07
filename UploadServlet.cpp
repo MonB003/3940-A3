@@ -4,6 +4,8 @@
 //     swap(*this,up);
 // }
 
+// g++ main.cpp ServerThread.cpp Request.cpp ServerSocket.cpp Response.cpp Socket.cpp UploadServlet.cpp base64.cpp -o server
+
 UploadServlet::UploadServlet(int socket) : socket(socket) {}
 
 int UploadServlet::getSocket()
@@ -13,18 +15,7 @@ int UploadServlet::getSocket()
 
 void UploadServlet::post(Response &response, Request &request)
 {
-
-    // TODO
-    ostringstream oss;
-    istringstream *in = request.getInputStream();
-    cout << "BEFORE UPLOAD LOOP" << endl;
-
-    unsigned char *content;
-    while (*in >> content)
-    {
-        cout << "CONTENT: " << content << endl;
-        oss << content;
-    }
+    cout << "Start of post uploadservlet ------------------" << endl;
     time_t timer;
     struct tm y2k = {0};
     y2k.tm_hour = 0;
@@ -46,9 +37,17 @@ void UploadServlet::post(Response &response, Request &request)
     filename.append(timeString);
     filename.append(".png");
     // may need to set write mode to base64 if we end up doing that again, not totally sure how
-    ofstream fileOut(filename);
-    string byteStr = oss.str();
-    fileOut << byteStr;
+    ofstream fileOut(filename, ios_base::out | ios_base::binary);
+    cout << "Opened file stream -----------" << endl;
+    // Base64 Encoder doesnt workkk.
+    string byteStr = "iVBORw0KGgoAAAANSUhEUgAAAB8AAAARCAYAAAAlpHdJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC2SURBVEhL7ZXdDYMwDIS9YCTmQdnETBLm4CFTeIRrapLGRakQLTQP7cNJsXz4u/xIkIigl34YzgPBTbHZPKTZg8gjtHovdA18YThy4GXj2eg8uNUxOMMTpeRJAyMWQ94NT27tJflZEMbszbX1Bgl11k4AhVdThNZjWA06sJ5MzCEKUEOUsO8e+wN2lx1i141aw3wKf7pz/bAX3A75BrwObN35xfC9134YXjZhHmdL/x9LF3WEC25pAgP+h75e8AAAAABJRU5ErkJggg==";
+    cout << byteStr << endl;
+    cout << "Got image bytecode ---------------" << endl;
+    string base64Str = base64_decode(byteStr);
+    cout << "Decoded bytecode ------------------" << endl;
+    fileOut << base64Str;
+    cout << "Placed bytecode ------------------" << endl;
+    fileOut.write(base64Str.c_str(), base64Str.length());
     fileOut.close();
 
     DIR *directory;

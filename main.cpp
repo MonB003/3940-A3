@@ -20,6 +20,7 @@
 #include <string>
 #include <cstring>
 
+// g++ main.cpp ServerThread.cpp Request.cpp ServerSocket.cpp Response.cpp Socket.cpp UploadServlet.cpp -o main
 
 using namespace std;
 
@@ -35,7 +36,7 @@ int main() {
     char *host = "127.0.0.1"; // local host address
     int rval;
 
-    ServerSocket *socket = new ServerSocket(8887); // socket creation.
+    ServerSocket *socket = new ServerSocket(8889); // socket creation.
         cout<<"not in loop"<<endl;
     if(socket == NULL){
         cout<<"UH OH"<<endl;

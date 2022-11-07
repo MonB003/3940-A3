@@ -46,6 +46,37 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
+<<<<<<< HEAD
         "string_view": "cpp"
+=======
+        "xlocmes": "cpp",
+        "xstring": "cpp",
+        "map": "cpp",
+        "bit": "cpp",
+        "charconv": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "cstring": "cpp",
+        "format": "cpp",
+        "forward_list": "cpp",
+        "iomanip": "cpp",
+        "ios": "cpp",
+        "locale": "cpp",
+        "optional": "cpp",
+        "stop_token": "cpp",
+        "xfacet": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xlocbuf": "cpp",
+        "xlocinfo": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xloctime": "cpp",
+        "xmemory": "cpp",
+        "xstddef": "cpp",
+        "xtr1common": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp"
+>>>>>>> CLI-Branch
     }
 }

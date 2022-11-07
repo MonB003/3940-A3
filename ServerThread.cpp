@@ -198,5 +198,23 @@ string ServerThread::run()
 
     runMethod(requestMethod, response, request, *up);
 
-    return requestMethod;
+    string locationOfRequest = request -> getUserAgent();
+
+    // if (locationOfRequest == "browser")
+    // {
+    //     up = (UploadServlet) new UploadServlet();
+    // }
+    // else if (locationOfRequest == "cli")
+    // {
+    //     // up = new ClientServlet();
+    // }
+
+
+
+    runMethod(requestMethod, response, request, *up);
+
+
+
+    // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
+   return requestMethod;
 }
