@@ -43,7 +43,7 @@ string ClientServlet::encodeImage(string imagepath){
     while(image >> temp){
         imageBytes.append(temp);
     }
-    imagebase64 = base64_encode(imageBytes);
+    imagebase64 = base64::to_base64(imageBytes);
     return imagebase64;
 }
 
@@ -192,17 +192,11 @@ void ClientServlet::POSTRequest() {
             perror("Error opening stream socket");
         }
 
-        // Erases the data in the n bytes of the memory starting at the location pointed.
         bzero(&server, sizeof(server));
-        // gethostbyname() returns a structure of type hostent for the given host name. "localhost:8888" - "hostname:portnumber"
         hp = gethostbyname("localhost");
-        // bcopy() copies n bytes from src to dest. (src, dest, size)
-        // Ultimately, is using hostent (hp) to set our server address for the Socket to connect to.
         bcopy((char*)hp->h_addr, (char*)&server.sin_addr, hp->h_length);
-        //Set connection type to Internet
         server.sin_family = AF_INET;
-        //Set port to our port number
-        server.sin_port = portNumber;
+        server.sin_port = htons(portNumber);
         
         // Use Socket to connect Server Address.
         if (connect(sock, (struct sockaddr*)&server, sizeof(server))<0){
@@ -230,19 +224,19 @@ void ClientServlet::POSTRequest() {
 
         // Sending text "Data"
         writer.append("--").append(boundary).append(newLine);
-        writer.append("Content-Disposition: form-data; name=\"Date\"").append(newLine);
+        writer.append("Content-Disposition: form-data; name=\"date\"").append(newLine);
         writer.append("Content-Type: text/plain; charset=").append(charset).append(newLine);
         writer.append(newLine).append(MultiDate).append(newLine);
 
         // Sending text "Keyword"
         writer.append("--").append(boundary).append(newLine);
-        writer.append("Content-Disposition: form-data; name=\"Keyword\"").append(newLine);
+        writer.append("Content-Disposition: form-data; name=\"keyword\"").append(newLine);
         writer.append("Content-Type: text/plain; charset=").append(charset).append(newLine);
         writer.append(newLine).append(MultiKeyword).append(newLine);
 
         // Sending text "Caption"
         writer.append("--").append(boundary).append(newLine);
-        writer.append("Content-Disposition: form-data; name=\"Caption\"").append(newLine);
+        writer.append("Content-Disposition: form-data; name=\"caption\"").append(newLine);
         writer.append("Content-Type: text/plain; charset=").append(charset).append(newLine);
         writer.append(newLine).append(MultiCaption).append(newLine);
 
@@ -267,7 +261,8 @@ void ClientServlet::POSTRequest() {
         // strcpy(buf,"/usr/include");
         // Write to File Descriptor (File Descriptor, Input, Input Size)
         // On success the number of bytes written is returned. On error, -1 is returned
-        if ((rval = write(sock, "hello world!!!", 1024)) < 0){
+        
+        if ((rval = write(sock, writer.c_str(), writer.length())) < 0){
         // if ((rval = write(sock, writer.c_str(), writer.length())) < 0){
             // Print if error.
             perror("Error: Writing to Socket");

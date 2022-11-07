@@ -78,7 +78,7 @@ string ServerThread::run()
 
 
 
-    // runMethod(requestMethod, response, request, *up);
+    runMethod(requestMethod, response, request, *up);
 
 
 

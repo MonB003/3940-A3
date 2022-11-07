@@ -142,42 +142,73 @@ void Request::parsePayload2(istringstream* inStream){
     string userAgent;
     string caption;
     string date;
+    string keyword;
     while (*inStream >> intermediate){
         cout << "PAIN: " <<intermediate << endl;
 
         if(intermediate.find("POST") != std::string::npos || intermediate.find("GET") != std::string::npos ){
+
             cout << "HELL:" << intermediate << endl;
             reqType = intermediate;
             setReqType(reqType);
+
         }
         // No Boundary in GET Requests..
         if(intermediate.find("boundary=") != std::string::npos && reqType == "POST"){
-            cout << intermediate << endl;
+            cout << "HELL2: " << intermediate << endl;
             boundary = intermediate;
             boundary = boundary.substr(9,boundary.length());
         }
         if(intermediate.find("User-Agent:") != std::string::npos){
             *inStream >> intermediate;
-            cout << intermediate << endl;
+            cout  << "HELL3: " << intermediate << endl;
             userAgent = intermediate;
             setUserAgent(userAgent);
+
         }
         if(intermediate.find("name=\"caption\"") != std::string::npos && reqType == "POST"){
-            *inStream >> intermediate;
-            cout << intermediate << endl;
+            for (int x = 0 ; x < 4; x++ ){
+                getline(*inStream, intermediate);
+            }
+            cout  << "HELL4: " << intermediate << endl;
             caption = intermediate;
             FormDataMap.insert(make_pair("Caption", caption));
+
         }
+        if(intermediate.find("name=\"keyword\"") != std::string::npos && reqType == "POST"){
+            for (int x = 0 ; x < 4; x++ ){
+                getline(*inStream, intermediate);
+            }
+            cout << "HELL5: " <<intermediate << endl;
+            keyword = intermediate;
+            FormDataMap.insert(make_pair("Keyword", keyword));
+
+        }
+        
         if(intermediate.find("name=\"date\"") != std::string::npos && reqType == "POST"){
-            *inStream >> intermediate;
-            cout << intermediate << endl;
+            for (int x = 0 ; x < 4; x++ ){
+                getline(*inStream, intermediate);
+            }
+            cout  << "HELL6: " << intermediate << endl;
             date = intermediate;
             FormDataMap.insert(make_pair("Date",date));
+
+        }
+
+        if(intermediate.find("name=\"File\"") != std::string::npos && reqType == "POST"){
+            for (int x = 0 ; x < 5; x++ ){
+                getline(*inStream, intermediate);
+            }
+            cout  << "HELL6: " << intermediate << endl;
+            imageByteCode = intermediate;
+
         }
     }
     cout << "RequestType: " << reqType << endl;
     cout << "Boundary: " << boundary << endl;
     cout << "UserAgent: " << userAgent << endl;
     cout << "Caption: " << caption << endl;
+    cout << "Keyword: " << keyword << endl;
     cout << "Date: " << date << endl;
+    cout << "ImageByteCode: " << imageByteCode << endl;
 }

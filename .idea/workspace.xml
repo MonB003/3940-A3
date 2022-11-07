@@ -6,7 +6,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="291a482c-0a5a-4e02-89d7-10d6e01884ed" name="Changes" comment="" />
+    <list default="true" id="291a482c-0a5a-4e02-89d7-10d6e01884ed" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClientServlet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ClientServlet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Request.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Request.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServerThread.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ServerThread.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UploadServlet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UploadServlet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UploadServlet.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/UploadServlet.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base64.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base64.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/base64.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client.exe" beforeDir="false" afterPath="$PROJECT_DIR$/client.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.exe" beforeDir="false" afterPath="$PROJECT_DIR$/server.exe" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
