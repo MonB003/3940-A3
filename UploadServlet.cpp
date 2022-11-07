@@ -13,12 +13,19 @@ int UploadServlet::getSocket()
 
 void UploadServlet::post(Response &response, Request &request)
 {
+
+
+
+
     // TODO
     ostringstream oss;
     istringstream *in = request.getInputStream();
+    cout << "BEFORE UPLOAD LOOP" << endl;
+
     unsigned char *content;
     while (*in >> content)
     {
+        cout << "CONTENT: " << content << endl;
         oss << content;
     }
     time_t timer;
@@ -74,22 +81,8 @@ int UploadServlet::get(Response &response, Request &request)
    // int send_res = send(socket, html.c_str(), html.length(), 0);
 
     int rval = write(socket,html.c_str(),html.length() );
-    // if (send_res != -1)
-    // {
-    //     cout << "spot 1" << endl;
-    //     char szBuffer[10000 + 1];
-    //     cout << "spot 2" << endl;
 
-    //     send_res = recv(socket, szBuffer, 10000+1, 0);
-    //     cout << "spot 3" << endl;
-
-    //     if (send_res > 0)
-    //     {
-    //         // safely null terminate
-    //         szBuffer[send_res] = '\0';
-    //         cout << "RECEIVE: " << szBuffer << endl;
-    //     }
-    // }
+    shutdown(socket, SHUT_WR);
     return rval;
 }
 

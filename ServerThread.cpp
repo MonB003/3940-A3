@@ -57,13 +57,7 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
     {
         cout << "-------------------------------2. METHOD: " << method << endl;
         int responseInt = up.get(*res, *req);
-
-        // if (responseInt != -1) {
-
-        // }
-
-        // char buffer[1024 * 1024];
-        // int receiveInt = recv(up.getSocket(), &buffer, 1024 * 1024, 0);
+ 
         cout << "Response int: " << responseInt << endl;
     }
     else
@@ -87,7 +81,14 @@ string ServerThread::run()
     char buf[1];
     int i = 0;
     int rval;
+    string patternGet = "GET";
+    string patternPost = "POST";
+    string patternBoundary = "WebKitFormBoundary";// "boundary=----";
     string pattern = "\r\n\r\n";
+
+    char buf2[526336];
+    bool checkBoundary = false;
+    int j = 0;
 
    
     while (((rval = read(msgsocket->getSocket(), buf, 1)) == 1))
@@ -96,8 +97,18 @@ string ServerThread::run()
 
         i++;
         cout << *buf;
-        // putchar(buf);  //you can uncomment it to debug
         string b{buf1};
+
+        if (checkBoundary == true) {
+            buf2[j] = *buf;
+            j++;
+        }
+        
+        if(b.find(patternBoundary) != std::string::npos){
+            // cout <<"CHANGE THE LOOP BOUNDARY" << endl;
+            checkBoundary = true;
+        }
+
         if(b.find(pattern) != std::string::npos){
             cout <<"BREAKING THE LOOP" << endl;
             break;
@@ -105,27 +116,10 @@ string ServerThread::run()
 
     }
     buf[i] = '\0';
-    // cout << "buffer: " << buf1 <<endl;
 
 
-//     write(sock, buf, msgLength);
-// shutdown(sock, SHUT_WR);
+    cout << "BUF 2: " << buf2 << endl;
 
-    // renderHTML();
-
-
-
-
-    
-
-    //  cout << "ParsedSocket: " << parsedSocket << endl;
-    // writes to the socket
-    // recv(msgsocket->getSocket(), &buffer, 1024 * 1024, 0);
-
-    // cout << "BUFFER--------------------------" << endl;
-    // cout << buffer << endl;
-    // istringstream requestInfo = buffer.c_str();
-    // istringstream requestInfo(data.c_str());
     string data = buf1;
     istringstream requestInfo(data.c_str());
     istringstream *reqPtr = &requestInfo;
@@ -133,29 +127,13 @@ string ServerThread::run()
     ostringstream *outputWriter = new ostringstream();
     response = new Response(msgsocket->getSocket(), outputWriter);
     request = new Request(reqPtr);
-    // renderHTML();
+
     UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
 
     string requestMethod = request->getReqMethod();
     // cout << "METHOD: [" << requestMethod << "]" << endl;
 
-    // string locationOfRequest = request -> getUserAgent();
-
-    // if (locationOfRequest == "browser")
-    // {
-    //     up = (UploadServlet) new UploadServlet();
-    // }
-    // else if (locationOfRequest == "cli")
-    // {
-    //     // up = new ClientServlet();
-    // }
-
     runMethod(requestMethod, response, request, *up);
 
-    // cout << buffer << endl;
-
-    // Request *req = new Request(reqPtr);
-
-    // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
-    return ""; // requestMethod;
+    return requestMethod; 
 }

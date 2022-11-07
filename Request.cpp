@@ -141,7 +141,7 @@ void Request::parsePayload2(istringstream* inStream){
     string caption;
     string date;
     while (*inStream >> intermediate){
-        cout << intermediate << endl;
+        cout << "PAIN: " <<intermediate << endl;
 
         if(intermediate.find("POST") != std::string::npos || intermediate.find("GET") != std::string::npos ){
             cout << "HELL:" << intermediate << endl;
@@ -152,7 +152,7 @@ void Request::parsePayload2(istringstream* inStream){
         if(intermediate.find("boundary=") != std::string::npos && reqType == "POST"){
             cout << intermediate << endl;
             boundary = intermediate;
-            boundary = boundary.substr(9,boundary.length()-2);
+            boundary = boundary.substr(9,boundary.length());
         }
         if(intermediate.find("User-Agent:") != std::string::npos){
             *inStream >> intermediate;
