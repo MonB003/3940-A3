@@ -107,7 +107,7 @@ string ServerThread::run()
         // each line of the request.
         if (*buf == '\n')
         {
-            cout << "LINE: " << data << endl;
+            // cout << "LINE: " << data << endl;
         }
 
         if (data.find(patternGet) != std::string::npos)
@@ -131,6 +131,7 @@ string ServerThread::run()
         if (data.find(patternPost) != std::string::npos)
         {
             isPost = true;
+            // cout << "POST FOUND" << endl;
         }
 
         if (data.find(boundary) != std::string::npos)
@@ -175,6 +176,18 @@ string ServerThread::run()
 
     cout << finishedData << endl;
 
+
+
+
+    cout << "POST IS: " << isPost << endl;
+
+    if (isPost) {
+        writeFile(finishedData);
+    }
+    
+
+
+
     cout << "-------------------------------END FINISHED DATA----------------------------------" << endl;
 
     cout << "-----------1-------------" << endl; 
@@ -216,3 +229,78 @@ string ServerThread::run()
 
     return ""; // requestMethod;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+void ServerThread::writeFile(string content) {
+        cout << "WRITE FILE" << endl;
+        // FILE *filePointer = nullptr;
+        // char *test = "test.txt";
+
+        // char buffer[1];
+
+        // filePointer = fopen(test, "w");
+
+        cout << "OPEN FILE" << endl;
+
+
+       
+
+        // int num;
+        // while (1) {
+        //      cout << "IN LOOP" << endl;
+        //     num = recv(msgsocket->getSocket(), buffer, 1, 0);
+
+        //     cout << "RECEIVE" << endl;
+        //     if (num <= 0) {
+        //          cout << "NUM IS 0" << endl;
+        //         break;
+        //     }
+        //      cout << "AFTER IF" << endl;
+        //     fprintf(filePointer, "%s", content);
+
+        //     cout << "AFTER WRITE" << endl;
+
+        //     bzero(buffer, content.length());
+        // }
+
+
+        fstream myfile;
+        myfile.open("test.txt");
+        
+        bool isTrue = true;
+
+        while (isTrue == true) {
+            cout << "WHILE LOOP" << endl;
+            cout << content << endl;
+            int find1 = content.find("name=\"fileName\";");
+            string substr1 = content.substr(find1, content.length());
+            int find2 = substr1.find("\r\n");
+            string substr2 = substr1.substr(find2, content.length());
+
+            cout << "-------------------FOUND FILENAME" << endl;
+            cout << substr1 << endl;
+            cout << substr2 << endl;
+
+            myfile << substr2 << "\n";
+
+            // if (content.find("name=\"filename\"") != std::string::npos) {
+            //     cout << "-------------------FOUND FILENAME" << endl;
+            //     cout << content << endl;
+            //     if (content.find("\r\n") != std::string::npos) {
+                    
+            //     }
+            // }
+        }
+        myfile.close();
+
+    }
