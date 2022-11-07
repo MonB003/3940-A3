@@ -15,10 +15,15 @@ ServerSocket::ServerSocket(int port)
     int bound = bind(sock, (struct sockaddr *)&server, sizeof(server));
    // cout << "bound: " << bound << endl;
     listen(sock, 5);
+
+    cout <<"Attempting a connection"<<endl;
+
 };
 
 Socket *ServerSocket::Accept()
 {
+  cout <<"Attempting an accept of the socket"<<endl;
+
   sockaddr_in localAddr, remoteAddr;
 	int addrLen = sizeof (remoteAddr);
 	int cSock = accept(sock, (struct sockaddr*) 0, (socklen_t*) 0 );

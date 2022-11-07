@@ -96,14 +96,21 @@ string ServerThread::run()
     bool startByteCode = false;
     bool endByteCode = false;
     string boundaryCheckString = "";
+    bool dontHaveBoundaryNumber = true;
+    bool dontHaveContentLength = false;
+    bool numberLength = false;
+    char imageByteCode[526336];
+    int byteCodeIndex = 0;
+
+    string b = "";
+
+    // istringstream iss(b);
+    string boundaryNumber ="" ;
+    string contentLengthNumber = "";
 
     while (((rval = read(msgsocket->getSocket(), buf, 1)) == 1))
     {
-        buf1[i] = *buf;
-
-        i++;
-        cout << *buf;
-        string b{buf1};
+        b += *buf;
 
         if (checkBoundary == true)
         {
@@ -111,19 +118,18 @@ string ServerThread::run()
             j++;
         }
 
-        if(b.find(patternGet) != std::string::npos){
+        if (b.find(patternGet) != std::string::npos)
+        {
             isGet = true;
-
         }
 
         if (b.find(patternPost) != std::string::npos)
         {
             isPost = true;
 
-
             // cout << "--------------------------------------------POST IS HAPPENING --------------------------------------------" << endl;
         }
-    
+
         if (isGet)
         {
             if (b.find(pattern) != std::string::npos)
@@ -133,49 +139,88 @@ string ServerThread::run()
             }
         }
 
-
-        if (b.find("Content-Type: image/") != std::string::npos){
+        if (b.find("Content-Type: image/") != std::string::npos)
+        {
             startByteCode = true;
         }
 
-        // if (startByteCode == true) {
-        //     imageByteCode[byteCodeIndex] = *buf;
-        //     byteCodeIndex++;
-        // } else {
-            
-        // }
+        if ((b.find("boundary=---------------------------") != std::string::npos) && (isPost == true))
+        {
+            // 1. until we see whitespace we scan get the boubndary number
 
-        //cout << "BUFFER:---------------------------"<< b << endl ;
-        if((b.find("boundary=---------------------------") != std::string::npos) && (isPost == true)){
-            
-            cout << "READING BYTE CODE" << endl;
-            // looping here until end of line
-            
-            // char imageByteCode[526336];
-            // int byteCodeIndex = 0;
+            if(*buf =='\n' && !dontHaveContentLength){
+                //cout << "\nFINISHED STRING: " << boundaryNumber << "\n\n" << endl;
+               dontHaveBoundaryNumber = false;
+               dontHaveContentLength = true;
+                // do some sort of buffer move
+            } else {
+                if(dontHaveBoundaryNumber) {
+                    boundaryNumber += *buf;
+                    // cout << "\nFROM ISS: " << boundaryNumber << "\n\n" << endl;
+                } 
 
-            // char byteBuf[1];
-            // cout << "-----BYTE CODE-----" << endl;
-            // while (((rval = read(msgsocket->getSocket(), byteBuf, 1)) == 1)) {
-            //     imageByteCode[byteCodeIndex] = *byteBuf;
-            //     cout << *byteBuf;
-                
-            //     if(*byteBuf == '\n'){
-            //         break;
-            //     }
+                // 2. scan again until end of content length str to know size of body
+                  // DONE 
+                if(dontHaveContentLength){
+                    if(*buf == ' '){
+                        
+                        contentLengthNumber += *buf;
+                        cout << "\nFROM ISS: " << boundaryNumber << "\n\n" << endl;
+                        numberLength = true;
+                        // add to our new content length
+                    } else {
+                        if(numberLength){
+                            if(*buf == '\n'){
+                                cout << "\n\n\n\n-----------------------------------------------------------------CONTENT LENGTH NUMBER: [" << contentLengthNumber <<"]"<< endl;
+                                numberLength = false;
+                            } else {
+                            
+                            
+                                contentLengthNumber += *buf;
+                                // cout << "CONTENT AS WE BUILD:  " << contentLengthNumber << endl;
+                            }   
+                        }
+                    }
+                }
+            }
+                       
+            // 3. we want to skip ahead until we hit the other boundary with the -- at the end of our number var.
+            // OR until we see the string name="submit" ???
 
-            //     byteCodeIndex++;
-            // }
+            // cout << "\n--------------------------------------here" << endl;
+            imageByteCode[byteCodeIndex] = *buf;
+            cout << "next char: " << *buf << endl;
+            byteCodeIndex++;
+            // cout << imageByteCode[byteCodeIndex];
+            b = (string)buf1;
+            //  b += *buf1;
+        }
+        else
+        {
+            buf1[i] = *buf;
 
-            //             cout << "-----END OF BYTE CODE-----" << endl;
-
-
-
-            
-            // break;
+            i++;
+            cout << *buf;
+            b = (string)buf1;
         }
     }
     buf[i] = '\0';
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
 
     cout << "BUF 2: " << buf2 << endl;
 

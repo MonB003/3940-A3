@@ -46,6 +46,11 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
+<<<<<<< HEAD
         "string_view": "cpp"
+=======
+        "xlocmes": "cpp",
+        "xstring": "cpp"
+>>>>>>> CLI-Branch
     }
 }

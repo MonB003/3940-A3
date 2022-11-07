@@ -35,11 +35,11 @@ int main() {
     char *host = "127.0.0.1"; // local host address
     int rval;
 
-    ServerSocket *socket = new ServerSocket(8887); // socket creation.
-        cout<<"not in loop"<<endl;
-    if(socket == NULL){
-        cout<<"UH OH"<<endl;
-    }
+    ServerSocket *socket = new ServerSocket(8897); // socket creation.
+
+
+
+
 
     while(socket != NULL){
           cout<<"NOT NULL"<<endl;
