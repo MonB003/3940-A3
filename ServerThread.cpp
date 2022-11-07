@@ -111,6 +111,7 @@ string ServerThread::run()
     while (((rval = read(msgsocket->getSocket(), buf, 1)) == 1))
     {
         b += *buf;
+        
 
         if (checkBoundary == true)
         {
