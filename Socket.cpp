@@ -26,6 +26,8 @@ int rval;
     
     //printf("%s\n",res);
   //  close(this->sock);
+     shutdown(sock, SHUT_WR);
+
  }
 
 	return;
