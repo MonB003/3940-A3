@@ -12,44 +12,41 @@ int ServerThread::renderHTML()
     char arr[200] = "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: 16\n\n<h1>testing</h1>";
 
     int send_res = send(msgsocket->getSocket(), html.c_str(), html.length(), 0); //
-    // do a response...
     return send_res;
 }
 
-string ServerThread::readSocket()
-{
-    char character[1];
-    string fileData;
-    int r;
+// string ServerThread::readSocket()
+// {
+//     char character[1];
+//     string fileData;
+//     int r;
 
-    cout << "START OF READSOCKET LOOP" << endl;
+//     cout << "START OF READSOCKET LOOP" << endl;
 
-    while (r = recv(msgsocket->getSocket(), &character, 1, 0) == 1)
-    {
-        cout << *character << endl;
-        fileData += *character;
-        // cout << "R VAL: " << r << endl;
-    }
+//     while (r = recv(msgsocket->getSocket(), &character, 1, 0) == 1)
+//     {
+//         cout << *character << endl;
+//         fileData += *character;
+//         // cout << "R VAL: " << r << endl;
+//     }
 
-    //     char* requestPtr = (char*)malloc(fileData.length() + 1);
-    //     char arr[fileData.length()];
-    //     strcpy(arr, fileData.c_str());
+//     //     char* requestPtr = (char*)malloc(fileData.length() + 1);
+//     //     char arr[fileData.length()];
+//     //     strcpy(arr, fileData.c_str());
 
-    //   //  cout << "FILE DATA LOOP" << endl;
-    //     for(int i = 0; i < fileData.length(); i++){
-    //         requestPtr[i] = arr[i];
-    //   //      cout << "file character: " << requestPtr[i] <<endl;;
+//     //   //  cout << "FILE DATA LOOP" << endl;
+//     //     for(int i = 0; i < fileData.length(); i++){
+//     //         requestPtr[i] = arr[i];
+//     //   //      cout << "file character: " << requestPtr[i] <<endl;;
 
-    //     }
+//     //     }
 
-    // requestPtr[fileData.length()] = '\0';
-    // cout<<"---------------------------------------"<<endl;
-    // cout << requestPtr << endl;
+//     // requestPtr[fileData.length()] = '\0';
+//     // cout<<"---------------------------------------"<<endl;
+//     // cout << requestPtr << endl;
 
-    cout << "END OF READSOCKET LOOP" << endl;
-
-    return fileData;
-}
+//     return fileData;
+// }
 
 void ServerThread::runMethod(string &method, Response *res, Request *req, Servlet &up)
 {
@@ -63,29 +60,28 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
     else
     {
         cout << "-------------------------------3. METHOD: " << method << endl;
-        up.get(*res, *req);
+        cout << "server is doing post req....." << endl;
         up.post(*res, *req);
+        
+        
+        up.get(*res, *req);
     }
-
-    cout << "in method call" << endl;
 }
 
 string ServerThread::run()
 {
     int bufferSize = 1;
-    
-   // char buf1[1024*1024];
-
     char buf[bufferSize];
-
-    char allDataBuffer[1024*1024];
-
+    string boundaryCode = "";
+    char allDataBuffer[1024 * 1024];
     int i = 0;
     int rval;
     string patternGet = "GET";
     string patternPost = "POST";
-    string patternBoundary = "WebKitFormBoundary"; // "boundary=----";
+    string patternBoundary = "WebKitFormBoundary";
     string pattern = "\r\n\r\n";
+    string boundary = "boundary=---------------------------";
+    string findBoundaryPattern = "";
 
     char buf2[526336];
     bool checkBoundary = false;
@@ -93,55 +89,86 @@ string ServerThread::run()
 
     bool isGet = false;
     bool isPost = false;
+    bool firstChar = true;
 
     bool startByteCode = false;
     bool endByteCode = false;
     string boundaryCheckString = "";
     int bufferIndex = 0;
-    //string data ="";
+    bool haveCode = false;
 
-    bool reading = true;
-    while ( rval = read(msgsocket->getSocket(), buf, bufferSize) > 0)
+    while (rval = read(msgsocket->getSocket(), buf, bufferSize) == 1)
     {
-        //rval = read(msgsocket->getSocket(), buf, bufferSize);
 
-        allDataBuffer[bufferIndex] = *buf;      
+        allDataBuffer[bufferIndex] = *buf;
         string data{allDataBuffer};
         bufferIndex++;
 
         // each line of the request.
-        if(*buf == '\n'){
-
+        if (*buf == '\n')
+        {
             cout << "LINE: " << data << endl;
         }
 
-
-        if(data.find(patternGet) != std::string::npos){
+        if (data.find(patternGet) != std::string::npos)
+        {
             isGet = true;
         }
 
-     
         if (isGet)
         {
             if (data.find(pattern) != std::string::npos)
             {
-                reading = false;
+                break;
             }
         }
 
-        if(isPost){
-            cout << "POST REQUEST NOW" << endl;
+        if (isPost)
+        {
+            //  cout << "POST REQUEST NOW" << endl;
         }
 
-        if(data.find(patternPost) != std::string::npos){
+        if (data.find(patternPost) != std::string::npos)
+        {
             isPost = true;
         }
 
+        if (data.find(boundary) != std::string::npos)
+        {
+            cout << "FOUND BOUNDARY" << endl;
+            if (!firstChar && !haveCode)
+            {
+                if (isdigit(*buf))
+                {
+                    boundaryCode += *buf;
+                    cout << "BOUNDARY CODE: " << boundaryCode << endl;
+                }
+                else
+                {
+                    findBoundaryPattern += boundaryCode + "--";
+                    cout << "\n\n--------The final boundary pattern: " << findBoundaryPattern << "\n\n"
+                         << endl;
+                    haveCode = true;
+                }
 
+                cout << "end of code" << endl;
+            }
+            else
+            {
+                firstChar = false;
+            }
+        }
+
+        if (haveCode && data.find(findBoundaryPattern) != std::string::npos)
+        {
+            cout << "WE ARE DONE" << endl;
+            break;
+        }
     }
-     allDataBuffer[bufferIndex] = '\0';
-     cout << "END-------------------------------------------------------------------------------------------" <<endl;
-        // cout << "BUFFER: ---------------------------------- " <<endl << buf1 << endl;
+
+    allDataBuffer[bufferIndex] = '\0';
+    cout << "END-------------------------------------------------------------------------------------------" << endl;
+    // cout << "BUFFER: ---------------------------------- " <<endl << buf1 << endl;
 
     string finishedData{allDataBuffer};
     cout << "-------------------------------START FINISHED DATA----------------------------------" << endl;
@@ -150,23 +177,31 @@ string ServerThread::run()
 
     cout << "-------------------------------END FINISHED DATA----------------------------------" << endl;
 
+    cout << "-----------1-------------" << endl; 
     istringstream requestInfo(finishedData.c_str());
-    istringstream *reqPtr = &requestInfo;
+        cout << "-----------2-------------" << endl; 
 
-    // cout << "------------------REQ:----------------" << endl;
-    // cout << data << endl;
-    // cout << "------------------REQ:----------------" << endl;
+    istringstream *reqPtr = &requestInfo;
+        cout << "-----------3-------------" << endl; 
 
     ostringstream *outputWriter = new ostringstream();
+        cout << "-----------4-------------" << endl; 
+
     response = new Response(msgsocket->getSocket(), outputWriter);
+        cout << "-----------5-------------" << endl; 
+
     request = new Request(reqPtr);
+        cout << "-----------6-------------" << endl; 
+
 
     UploadServlet *up = new UploadServlet{msgsocket->getSocket()};
 
     string requestMethod = request->getReqMethod();
     // cout << "METHOD: [" << requestMethod << "]" << endl;
+        cout << "-----------6-------------" << endl; 
 
     runMethod(requestMethod, response, request, *up);
+    cout << "-----------7-------------" << endl; 
 
     // string locationOfRequest = request -> getUserAgent();
 
@@ -179,12 +214,5 @@ string ServerThread::run()
     //     // up = new ClientServlet();
     // }
 
-
-
-    // runMethod(requestMethod, response, request, *up);
-
-
-
-    // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
-   return "";//requestMethod;
+    return ""; // requestMethod;
 }

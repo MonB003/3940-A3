@@ -5,6 +5,7 @@ Request::Request(){};
 Request::Request(istringstream *inStream)
 {
     inputStream = inStream;
+    
     // parsePayload(inputStream);
     parsePayload2(inputStream);
     FormDataMap = map<string,string>();

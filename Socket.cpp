@@ -20,13 +20,13 @@ string Socket::getRequest()
 void Socket::sendResponse(char *res){
 int rval;
 
-  if ((rval = write(sock, res, strlen(res))) < 0){
-    perror("writing socket");
+ if ((rval = write(sock, res, strlen(res))) < 0){
+   perror("writing socket");
   }else  {
     
-    printf("%s\n",res);
-    //close(this->sock);
-  }
+    //printf("%s\n",res);
+  //  close(this->sock);
+ }
 
 	return;
 }

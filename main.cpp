@@ -27,43 +27,36 @@ using namespace std;
 /**
     main function.
 */
-int main() {
+int main()
+{
 
     struct sockaddr_in server;
     int msgsock;
     char buf[1024];
-    //struct hostent *host;
+    // struct hostent *host;
     char *host = "127.0.0.1"; // local host address
     int rval;
 
-    ServerSocket *socket = new ServerSocket(8881); // socket creation.
-        cout<<"not in loop"<<endl;
-    if(socket == NULL){
-        cout<<"UH OH"<<endl;
-    }
+    ServerSocket *socket = new ServerSocket(8880); // socket creation.
 
-    while(socket != NULL){
-          cout<<"NOT NULL"<<endl;
-          
-        Socket *currentSocket = socket -> Accept(); 
-        cout << "here in mnain" <<endl;
-        ServerThread* serverThread = new ServerThread(currentSocket);
-        serverThread -> run();
-        // Request* request   = serverThread -> getRequest(); /// serVerthread return req
-        // Response* response = serverThread -> getResponse();
-        // string responseStr = response-> sendBack("");
-        // char* resPtr       = const_cast<char *>(responseStr.c_str());
-        // currentSocket -> sendResponse(resPtr);
-        
-       close(currentSocket->getSocket());
+    while (socket != NULL)
+    {
+        cout << "NOT NULL" << endl;
+
+        Socket *currentSocket = socket->Accept();
+        cout << "here in mnain" << endl;
+        ServerThread *serverThread = new ServerThread(currentSocket);
+        serverThread->run();
+        Request *request = serverThread->getRequest(); 
+        Response *response = serverThread->getResponse();
+        cout << "req method: " << request->getReqMethod() << endl;
+        string responseStr = response->sendBack("");
+        char *resPtr = const_cast<char *>(responseStr.c_str());
+        currentSocket->sendResponse(resPtr);
+        close(currentSocket->getSocket());
     }
     close(socket->getPort());
 
-
-cout<<"here"<<endl;
+    cout << "here" << endl;
     return 0;
 }
-
-
-
-
