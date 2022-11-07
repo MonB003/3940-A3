@@ -36,7 +36,7 @@ int main() {
     char *host = "127.0.0.1"; // local host address
     int rval;
 
-    ServerSocket *socket = new ServerSocket(8889); // socket creation.
+    ServerSocket *socket = new ServerSocket(8881); // socket creation.
         cout<<"not in loop"<<endl;
     if(socket == NULL){
         cout<<"UH OH"<<endl;

@@ -72,13 +72,14 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
 
 string ServerThread::run()
 {
-    // char buffer[1024 * 1024];
-    cout << "here" << endl;
-    // string data = readSocket();
-    //  renderHTML();
+    int bufferSize = 1;
+    
+   // char buf1[1024*1024];
 
-    char buf1[526336];
-    char buf[1];
+    char buf[bufferSize];
+
+    char allDataBuffer[1024*1024];
+
     int i = 0;
     int rval;
     string patternGet = "GET";
@@ -96,96 +97,65 @@ string ServerThread::run()
     bool startByteCode = false;
     bool endByteCode = false;
     string boundaryCheckString = "";
+    int bufferIndex = 0;
+    //string data ="";
 
-    while (((rval = read(msgsocket->getSocket(), buf, 1)) == 1))
+    bool reading = true;
+    while ( rval = read(msgsocket->getSocket(), buf, bufferSize) > 0)
     {
-        buf1[i] = *buf;
+        //rval = read(msgsocket->getSocket(), buf, bufferSize);
 
-        i++;
-        cout << *buf;
-        string b{buf1};
+        allDataBuffer[bufferIndex] = *buf;      
+        string data{allDataBuffer};
+        bufferIndex++;
 
-        if (checkBoundary == true)
-        {
-            buf2[j] = *buf;
-            j++;
+        // each line of the request.
+        if(*buf == '\n'){
+
+            cout << "LINE: " << data << endl;
         }
 
-        if(b.find(patternGet) != std::string::npos){
+
+        if(data.find(patternGet) != std::string::npos){
             isGet = true;
-
         }
 
-        if (b.find(patternPost) != std::string::npos)
-        {
-            isPost = true;
-
-
-            // cout << "--------------------------------------------POST IS HAPPENING --------------------------------------------" << endl;
-        }
-    
+     
         if (isGet)
         {
-            if (b.find(pattern) != std::string::npos)
+            if (data.find(pattern) != std::string::npos)
             {
-                cout << "BREAKING THE LOOP" << endl;
-                break;
+                reading = false;
             }
         }
 
-
-        if (b.find("Content-Type: image/") != std::string::npos){
-            startByteCode = true;
+        if(isPost){
+            cout << "POST REQUEST NOW" << endl;
         }
 
-        // if (startByteCode == true) {
-        //     imageByteCode[byteCodeIndex] = *buf;
-        //     byteCodeIndex++;
-        // } else {
-            
-        // }
-
-        //cout << "BUFFER:---------------------------"<< b << endl ;
-        if((b.find("boundary=---------------------------") != std::string::npos) && (isPost == true)){
-            
-            cout << "READING BYTE CODE" << endl;
-            // looping here until end of line
-            
-            // char imageByteCode[526336];
-            // int byteCodeIndex = 0;
-
-            // char byteBuf[1];
-            // cout << "-----BYTE CODE-----" << endl;
-            // while (((rval = read(msgsocket->getSocket(), byteBuf, 1)) == 1)) {
-            //     imageByteCode[byteCodeIndex] = *byteBuf;
-            //     cout << *byteBuf;
-                
-            //     if(*byteBuf == '\n'){
-            //         break;
-            //     }
-
-            //     byteCodeIndex++;
-            // }
-
-            //             cout << "-----END OF BYTE CODE-----" << endl;
-
-
-
-            
-            // break;
+        if(data.find(patternPost) != std::string::npos){
+            isPost = true;
         }
+
+
     }
-    buf[i] = '\0';
+     allDataBuffer[bufferIndex] = '\0';
+     cout << "END-------------------------------------------------------------------------------------------" <<endl;
+        // cout << "BUFFER: ---------------------------------- " <<endl << buf1 << endl;
 
-    cout << "BUF 2: " << buf2 << endl;
+    string finishedData{allDataBuffer};
+    cout << "-------------------------------START FINISHED DATA----------------------------------" << endl;
 
-    string data = buf1;
-    istringstream requestInfo(data.c_str());
+    cout << finishedData << endl;
+
+    cout << "-------------------------------END FINISHED DATA----------------------------------" << endl;
+
+    istringstream requestInfo(finishedData.c_str());
     istringstream *reqPtr = &requestInfo;
 
-    cout << "------------------REQ:----------------" << endl;
-    cout << data << endl;
-    cout << "------------------REQ:----------------" << endl;
+    // cout << "------------------REQ:----------------" << endl;
+    // cout << data << endl;
+    // cout << "------------------REQ:----------------" << endl;
 
     ostringstream *outputWriter = new ostringstream();
     response = new Response(msgsocket->getSocket(), outputWriter);
@@ -198,7 +168,7 @@ string ServerThread::run()
 
     runMethod(requestMethod, response, request, *up);
 
-    string locationOfRequest = request -> getUserAgent();
+    // string locationOfRequest = request -> getUserAgent();
 
     // if (locationOfRequest == "browser")
     // {
@@ -211,10 +181,10 @@ string ServerThread::run()
 
 
 
-    runMethod(requestMethod, response, request, *up);
+    // runMethod(requestMethod, response, request, *up);
 
 
 
     // send(msgsocket,get_http, strlen(get_http.c_str()),0 );
-   return requestMethod;
+   return "";//requestMethod;
 }
