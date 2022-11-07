@@ -57,7 +57,7 @@ void ServerThread::runMethod(string &method, Response *res, Request *req, Servle
     {
         cout << "-------------------------------2. METHOD: " << method << endl;
         int responseInt = up.get(*res, *req);
- 
+
         cout << "Response int: " << responseInt << endl;
     }
     else
@@ -74,8 +74,8 @@ string ServerThread::run()
 {
     // char buffer[1024 * 1024];
     cout << "here" << endl;
-    //string data = readSocket();
-    // renderHTML();
+    // string data = readSocket();
+    //  renderHTML();
 
     char buf1[526336];
     char buf[1];
@@ -83,14 +83,16 @@ string ServerThread::run()
     int rval;
     string patternGet = "GET";
     string patternPost = "POST";
-    string patternBoundary = "WebKitFormBoundary";// "boundary=----";
+    string patternBoundary = "WebKitFormBoundary"; // "boundary=----";
     string pattern = "\r\n\r\n";
 
     char buf2[526336];
     bool checkBoundary = false;
     int j = 0;
 
-   
+    bool isGet = false;
+    bool isPost = false;
+
     while (((rval = read(msgsocket->getSocket(), buf, 1)) == 1))
     {
         buf1[i] = *buf;
@@ -99,30 +101,48 @@ string ServerThread::run()
         cout << *buf;
         string b{buf1};
 
-        if (checkBoundary == true) {
+        if (checkBoundary == true)
+        {
             buf2[j] = *buf;
             j++;
         }
-        
-        if(b.find(patternBoundary) != std::string::npos){
-            // cout <<"CHANGE THE LOOP BOUNDARY" << endl;
-            checkBoundary = true;
+
+        if(b.find(patternGet) != std::string::npos){
+            isGet = true;
         }
 
-        if(b.find(pattern) != std::string::npos){
-            cout <<"BREAKING THE LOOP" << endl;
-            break;
-        }
+        if (b.find(patternPost) != std::string::npos)
+        {
+            isPost = true;
 
+            // cout << "--------------------------------------------POST IS HAPPENING --------------------------------------------" << endl;
+            continue;
+        }
+        // if(b.find(patternBoundary) != std::string::npos){
+        //     // cout <<"CHANGE THE LOOP BOUNDARY" << endl;
+        //     checkBoundary = true;
+        // }
+
+        if (isGet)
+        {
+            if (b.find(pattern) != std::string::npos)
+            {
+                cout << "BREAKING THE LOOP" << endl;
+                break;
+            }
+        }
     }
     buf[i] = '\0';
-
 
     cout << "BUF 2: " << buf2 << endl;
 
     string data = buf1;
     istringstream requestInfo(data.c_str());
     istringstream *reqPtr = &requestInfo;
+
+    cout << "------------------REQ:----------------" << endl;
+    cout << data << endl;
+    cout << "------------------REQ:----------------" << endl;
 
     ostringstream *outputWriter = new ostringstream();
     response = new Response(msgsocket->getSocket(), outputWriter);
@@ -135,5 +155,5 @@ string ServerThread::run()
 
     runMethod(requestMethod, response, request, *up);
 
-    return requestMethod; 
+    return requestMethod;
 }

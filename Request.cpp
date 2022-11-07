@@ -161,6 +161,7 @@ void Request::parsePayload2(istringstream* inStream){
             setUserAgent(userAgent);
         }
         if(intermediate.find("name=\"caption\"") != std::string::npos && reqType == "POST"){
+            cout << "HERE IN CAPTION/////////////////////////////" << endl;
             *inStream >> intermediate;
             cout << intermediate << endl;
             caption = intermediate;
