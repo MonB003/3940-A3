@@ -76,13 +76,13 @@ int main() {
         cout << "here in mnain" <<endl;
         ServerThread* serverThread = new ServerThread(currentSocket);
         serverThread -> run();
-        Request* request   = serverThread -> getRequest(); /// serVerthread return req
-        Response* response = serverThread -> getResponse();
-        string responseStr = response-> sendBack("");
-        char* resPtr       = const_cast<char *>(responseStr.c_str());
-        currentSocket -> sendResponse(resPtr);
+        // Request* request   = serverThread -> getRequest(); /// serVerthread return req
+        // Response* response = serverThread -> getResponse();
+        // string responseStr = response-> sendBack("");
+        // char* resPtr       = const_cast<char *>(responseStr.c_str());
+        // currentSocket -> sendResponse(resPtr);
         
-     //   close(currentSocket->getSocket());
+       close(currentSocket->getSocket());
     }
     close(socket->getPort());
 
