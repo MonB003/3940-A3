@@ -38,10 +38,10 @@ void UploadServlet::post(Response &response, Request &request)
     ofstream fileOut(filename, ios_base::out | ios_base::binary);
     cout << "Opened file stream -----------" << endl;
     // Base64 Encoder doesnt workkk.
-    string byteStr = "iVBORw0KGgoAAAANSUhEUgAAAB8AAAARCAYAAAAlpHdJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC2SURBVEhL7ZXdDYMwDIS9YCTmQdnETBLm4CFTeIRrapLGRakQLTQP7cNJsXz4u/xIkIigl34YzgPBTbHZPKTZg8gjtHovdA18YThy4GXj2eg8uNUxOMMTpeRJAyMWQ94NT27tJflZEMbszbX1Bgl11k4AhVdThNZjWA06sJ5MzCEKUEOUsO8e+wN2lx1i141aw3wKf7pz/bAX3A75BrwObN35xfC9134YXjZhHmdL/x9LF3WEC25pAgP+h75e8AAAAABJRU5ErkJggg==";
+    string byteStr = request.getImageByteCode();
     cout << byteStr << endl;
     cout << "Got image bytecode ---------------" << endl;
-    string base64Str = base64::from_base64(byteStr);
+    string base64Str = base64_decode(byteStr);
     cout << "Decoded bytecode ------------------" << endl;
     fileOut << base64Str;
     cout << "Placed bytecode ------------------" << endl;

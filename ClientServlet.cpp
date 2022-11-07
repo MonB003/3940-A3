@@ -43,8 +43,8 @@ string ClientServlet::encodeImage(string imagepath){
     while(image >> temp){
         imageBytes.append(temp);
     }
-    imagebase64 = base64::to_base64(imageBytes);
-    return imagebase64;
+    cout << "imageBytes: " << imageBytes << endl;
+    return base64_encode(imageBytes);
 }
 
 void ClientServlet::POSTRequest() {
