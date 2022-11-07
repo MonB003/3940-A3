@@ -115,10 +115,12 @@ void Request::parsePayload(istringstream *inStream)
 
         int tokenLength = temp.size();
 
-        if (temp.find("User-Agent:"))
-        {
+        if (temp.find("User-Agent: cli")){
+            reqUserAgent = "cli";
+        } else if (temp.find("User-Agent:")){
             reqUserAgent = "browser";
         }
+
 
         if (currentLength == totalLengthOfPayload)
         {
