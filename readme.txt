@@ -2,22 +2,23 @@ Assignment 3 README
 
 SETUP:
 =================================
-BROWSER:
-Compile main.exe
-g++ main.cpp ServerThread.cpp Request.cpp ServerSocket.cpp Response.cpp Socket.cpp UploadServlet.cpp -o main
 
-
-CLI:
 Compile server.exe
 g++ main.cpp ServerThread.cpp Request.cpp ServerSocket.cpp Response.cpp Socket.cpp UploadServlet.cpp base64.cpp -o server
 
 Compile client.exe
 g++ ClientServlet.cpp Socket.cpp base64.cpp -o client
 
-Steps to run:
+Steps to run CLI:
 Step 1: Execute Server.exe
 Step 2: Execute Client.exe
 Step 3: Follow on screen instructions prompted by Client.exe
+
+Steps to run browser:
+Step 1: In the Cgywin terminal, execute ./server
+Step 2: In a browser, go to http://localhost:8889/
+Step 3: Select a file to upload, type a caption and select a date, then press the submit button.
+
 =================================
 
 
