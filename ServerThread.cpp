@@ -93,6 +93,10 @@ string ServerThread::run()
     bool isGet = false;
     bool isPost = false;
 
+    bool startByteCode = false;
+    bool endByteCode = false;
+    string boundaryCheckString = "";
+
     while (((rval = read(msgsocket->getSocket(), buf, 1)) == 1))
     {
         buf1[i] = *buf;
@@ -109,20 +113,17 @@ string ServerThread::run()
 
         if(b.find(patternGet) != std::string::npos){
             isGet = true;
+
         }
 
         if (b.find(patternPost) != std::string::npos)
         {
             isPost = true;
 
-            // cout << "--------------------------------------------POST IS HAPPENING --------------------------------------------" << endl;
-            continue;
-        }
-        // if(b.find(patternBoundary) != std::string::npos){
-        //     // cout <<"CHANGE THE LOOP BOUNDARY" << endl;
-        //     checkBoundary = true;
-        // }
 
+            // cout << "--------------------------------------------POST IS HAPPENING --------------------------------------------" << endl;
+        }
+    
         if (isGet)
         {
             if (b.find(pattern) != std::string::npos)
@@ -130,6 +131,48 @@ string ServerThread::run()
                 cout << "BREAKING THE LOOP" << endl;
                 break;
             }
+        }
+
+
+        if (b.find("Content-Type: image/") != std::string::npos){
+            startByteCode = true;
+        }
+
+        // if (startByteCode == true) {
+        //     imageByteCode[byteCodeIndex] = *buf;
+        //     byteCodeIndex++;
+        // } else {
+            
+        // }
+
+        //cout << "BUFFER:---------------------------"<< b << endl ;
+        if((b.find("boundary=---------------------------") != std::string::npos) && (isPost == true)){
+            
+            cout << "READING BYTE CODE" << endl;
+            // looping here until end of line
+            
+            // char imageByteCode[526336];
+            // int byteCodeIndex = 0;
+
+            // char byteBuf[1];
+            // cout << "-----BYTE CODE-----" << endl;
+            // while (((rval = read(msgsocket->getSocket(), byteBuf, 1)) == 1)) {
+            //     imageByteCode[byteCodeIndex] = *byteBuf;
+            //     cout << *byteBuf;
+                
+            //     if(*byteBuf == '\n'){
+            //         break;
+            //     }
+
+            //     byteCodeIndex++;
+            // }
+
+            //             cout << "-----END OF BYTE CODE-----" << endl;
+
+
+
+            
+            // break;
         }
     }
     buf[i] = '\0';
