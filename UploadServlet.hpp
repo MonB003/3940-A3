@@ -39,6 +39,6 @@ public:
     void post(Response &response, Request &request) override;
     
     string get(Response &response, Request &request) override;
-    string getListing(); 
+    static string getListing(); 
 
 };

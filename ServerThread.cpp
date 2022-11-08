@@ -26,7 +26,10 @@ string ServerThread::runMethod(string &method, Response *res, Request *req, Serv
     else
     {
         up.post(*res, *req);
-        responseStr = up.get(*res, *req);
+        responseStr = "HTTP/1.1 200 OK\nContent-Type:text/html\r\n\r\n";
+       
+        string listfiles = UploadServlet::getListing();
+        responseStr.append(listfiles);
     }
 
     return responseStr;
@@ -145,8 +148,6 @@ char * ServerThread::run()
     string requestMethod        = request->getReqMethod();
     string responseStr          = runMethod(requestMethod, response, request, *up);
     char *resPtr                = const_cast<char *>(responseStr.c_str());
-
-   
 
     return resPtr ;
 }

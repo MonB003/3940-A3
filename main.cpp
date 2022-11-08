@@ -37,17 +37,16 @@ int main()
     char *host = "127.0.0.1"; // local host address
     int rval;
 
-    ServerSocket *socket = new ServerSocket(8880); // socket creation.
+    ServerSocket *socket = new ServerSocket(8885); // socket creation.
 
     while (socket != NULL)
     {
-        cout << "NOT NULL" << endl;
-
         Socket *currentSocket = socket->Accept();
         cout << "here in mnain" << endl;
-        ServerThread *serverThread = new ServerThread(currentSocket);
+        ServerThread *serverThread = new ServerThread(currentSocket); // thread being created.
         char* req = serverThread -> run();
         currentSocket -> sendResponse(req);
+        currentSocket -> getRequest();
         close(currentSocket->getSocket());
     }   
     close(socket->getPort());

@@ -84,7 +84,7 @@ string UploadServlet::get(Response &response, Request &request)
 
 string UploadServlet::getListing()
 {
-    string dirList = "<ul>";
+    string dirList = "<!DOCTYPE html>\r\n<html>\r\n<body>\r\n<ul>";
     DIR *directory;
     struct dirent *currFile;
     directory = opendir("./images"); // Gets all files in the images folder
@@ -96,11 +96,12 @@ string UploadServlet::getListing()
             dirList.append("<li>");
             dirList.append(currFile->d_name);
             dirList.append("</li>");
+            dirList.append("<br>");
         }
     }
     closedir(directory);
 
-    dirList.append("</ul>");
+    dirList.append("</ul></body></html>");
 
     return dirList;
 }
