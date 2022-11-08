@@ -35,16 +35,54 @@ void ClientServlet::getUserInput() {
 }
 
 string ClientServlet::encodeImage(string imagepath){
+    /*
+    Objective:
+    1. Open File at given URL
+    2. Read and Store data NOT as string
+    3. Paste onto MultipartForm 
+    */
+    // unsigned char* imageBytes;
+    // FILE* file = fopen(imagepath.c_str(), "rb");
+    // fseek(file,0,SEEK_END);
+    // int size = ftell(file);
+    // fclose(file);
+    // file = fopen(imagepath.c_str(), "rb");
+    // imageBytes=new unsigned char[size];
+    // for (int x = 0; x < size; x++){
+    //     imageBytes[x] = fgetc(file);
+    // }
+    // fclose(file);
+
+    // file = fopen(imagepath, rb);
+
+    // ifstream image;
+    // image.open(imagePath, ios::binary);
+    // image.seekg(0, ios::end);
+    // int len = image.tellg();
+    // image.seekg(0, ios::beg);
+
     ifstream image;
     image.open(imagePath, ios::binary);
+    image.seekg(0, ios::end);
+    int len = image.tellg();
+    image.seekg(0, ios::beg);
     
     string imageBytes;
     string temp;
     while(image >> temp){
         imageBytes.append(temp);
     }
+    
+    // unsigned char* imageBytes;
+
+    // for (int x = 0; x < len; x++){
+    //     image.get(&imageBytes[x]);
+    // }
+    // imageBytes[len]='\0';
+
+
     cout << "imageBytes: " << imageBytes << endl;
-    return base64_encode(imageBytes);
+    return imageBytes;
 }
 
 void ClientServlet::POSTRequest() {
@@ -56,15 +94,7 @@ void ClientServlet::POSTRequest() {
     DIR *directory;
     directory = opendir(imagePath.c_str());
 
-    ifstream image;
-    image.open(imagePath, ios::binary);
-    
-    string imageBytes;
-    string temp;
-    while(image >> temp){
-        imageBytes.append(temp);
-    }
-    string imageBase64 = encodeImage(imageBytes);
+    string imageBase64 = encodeImage(imagePath);
     cout << "ByteCode:\n" << imageBase64 << endl;
 
     // POST Request: Upload an image from File System as "Multipart Data" along with

@@ -194,7 +194,7 @@ static std::string decode(String const& encoded_string, bool remove_linebreaks) 
     // The last chunk produces at least one and up to three bytes.
     //
 
-       size_t pos_of_char_1 = pos_of_char(encoded_string.at(pos+1) );
+       size_t pos_of_char_1 = pos_of_char(encoded_string.at(pos + 1) );
 
     //
     // Emit the first output byte that is produced in each chunk:

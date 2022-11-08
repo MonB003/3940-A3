@@ -20,6 +20,7 @@ public:
     void getUserInput();
     void POSTRequest();
     string encodeImage(string);
+    // static char* ReadAllBytes(const char* filename);
 
     string getImagePath() {
         return imagePath;
@@ -58,7 +59,7 @@ private:
     string MultiKeyword;
     string MultiCaption;
     string MultiDate;
-    string imagebase64;
+    unsigned char* imagebase64;
     int portNumber = 8889;
 };
 

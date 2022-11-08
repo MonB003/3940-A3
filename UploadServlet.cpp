@@ -35,19 +35,26 @@ void UploadServlet::post(Response &response, Request &request)
 
     // filename.append(seconds);
     filename.append(timeString);
-    filename.append(".png");
+    // filename.append(".png");
+    filename.append(".txt");
     // may need to set write mode to base64 if we end up doing that again, not totally sure how
-    ofstream fileOut(filename, ios_base::out | ios_base::binary);
+    // ofstream fileOut(filename, ios_base::out | ios_base::binary);
+    ofstream fileOut(filename, ios_base::out);
     cout << "Opened file stream -----------" << endl;
     // Base64 Encoder doesnt workkk.
-    string byteStr = "iVBORw0KGgoAAAANSUhEUgAAAB8AAAARCAYAAAAlpHdJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC2SURBVEhL7ZXdDYMwDIS9YCTmQdnETBLm4CFTeIRrapLGRakQLTQP7cNJsXz4u/xIkIigl34YzgPBTbHZPKTZg8gjtHovdA18YThy4GXj2eg8uNUxOMMTpeRJAyMWQ94NT27tJflZEMbszbX1Bgl11k4AhVdThNZjWA06sJ5MzCEKUEOUsO8e+wN2lx1i141aw3wKf7pz/bAX3A75BrwObN35xfC9134YXjZhHmdL/x9LF3WEC25pAgP+h75e8AAAAABJRU5ErkJggg==";
-    cout << byteStr << endl;
+    // string byteStr = "iVBORw0KGgoAAAANSUhEUgAAAB8AAAARCAYAAAAlpHdJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC2SURBVEhL7ZXdDYMwDIS9YCTmQdnETBLm4CFTeIRrapLGRakQLTQP7cNJsXz4u/xIkIigl34YzgPBTbHZPKTZg8gjtHovdA18YThy4GXj2eg8uNUxOMMTpeRJAyMWQ94NT27tJflZEMbszbX1Bgl11k4AhVdThNZjWA06sJ5MzCEKUEOUsO8e+wN2lx1i141aw3wKf7pz/bAX3A75BrwObN35xfC9134YXjZhHmdL/x9LF3WEC25pAgP+h75e8AAAAABJRU5ErkJggg==";
+    string byteStr = request.getImageByteCode();
+    // byteStr.erase(std::find(byteStr.begin(), byteStr.end(), '\0'), byteStr.end());
+    
+    // byteStr = request.getImageByteCode();
+    cout << "WE ARE HERE:\n" << byteStr << endl;
     cout << "Got image bytecode ---------------" << endl;
-    string base64Str = base64_decode(byteStr);
-    cout << "Decoded bytecode ------------------" << endl;
-    fileOut << base64Str;
-    cout << "Placed bytecode ------------------" << endl;
-    fileOut.write(base64Str.c_str(), base64Str.length());
+    // string base64Str = base64_decode(byteStr);
+    // cout << "Decoded bytecode ------------------" << endl;
+    // fileOut << base64Str;
+    // cout << "Placed bytecode ------------------" << endl;
+    // fileOut.write(base64Str.c_str(), base64Str.length());
+    fileOut << byteStr;
     fileOut.close();
 
     DIR *directory;
